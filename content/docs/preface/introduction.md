@@ -1,41 +1,40 @@
 ---
-summary: "AdonisJS is a TypeScript-first web framework for Node.js. You can use it to create a full-stack web application or a JSON API server."
+summary: "AdonisJS est un framework web Node.js écrit en TypeScript. Vous pouvez l'utiliser pour créer une application web full-stack ou une API JSON."
 ---
 
 # Introduction
 
 ::include{template="partials/introduction_cards"}
 
-## What is AdonisJS?
+## Qu'est-ce qu'AdonisJS ?
 
-AdonisJS is a TypeScript-first web framework for Node.js. You can use it to create a full-stack web application or a JSON API server.
+AdonisJS est un framework web Node.js écrit en TypeScript. Vous pouvez l'utiliser pour créer une application web full-stack ou une API JSON.
 
-At the fundamental level, AdonisJS [provides structure to your applications](../getting_started/folder_structure.md), configures a [seamless TypeScript development environment](../concepts/typescript_build_process.md), configures [HMR](../concepts/hmr.md) for your backend code, and offers a vast collection of well-maintained and extensively documented packages.
+Fondamentalement, AdonisJS [fournit une structure à vos applications](../getting_started/folder_structure.md), configure un [environnement de développement TypeScript transparent](../concepts/typescript_build_process.md),  met en place le [HMR](../concepts/hmr.md) (Hot Module Replacement) pour votre code backend,  et offre une vaste collection de packages bien maintenus et largement documentés.
 
-We envision teams using AdonisJS **spending less time** on trivial decisions like cherry-picking npm packages for every minor feature, writing glue code, debating for the perfect folder structure, and **spending more time** delivering real-world features critical for the business needs.
+Notre vision est que les équipes utilisant AdonisJS **passent moins de temps** sur des décisions triviales comme la sélection minutieuse de packages npm pour chaque fonctionnalité mineure, l'écriture de code de liaison, les débats sur la structure parfaite des dossiers, et **consacrent plus de temps**  à la réalisation de fonctionnalités réelles critiques pour les besoins de l'entreprise.
 
-### Frontend agnostic 
+### Côté frontend
 
-AdonisJS focuses on the backend and lets you choose the frontend stack of your choice.
+AdonisJS se concentre sur le backend et vous laisse choisir la stack frontend de votre choix.
 
-If you like to keep things simple, pair AdonisJS with a [traditional template engine](../views-and-templates/introduction.md) to generate static HTML on the server, create a JSON API for your frontend Vue/React application or use [Inertia](../views-and-templates/inertia.md) to make your favorite frontend framework work together in perfect harmony.
+Si vous aimez garder les choses simples, associez AdonisJS à un [moteur de template traditionnel](../views-and-templates/introduction.md) pour générer du HTML statique côté serveur, créez une API JSON pour votre application frontend Vue/React ou utilisez [Inertia](../views-and-templates/inertia.md) pour faire fonctionner votre framework frontend préféré en parfaite harmonie.
 
-AdonisJS aims to provide you with batteries to create a robust backend application from scratch. Be it sending emails, validating user input, performing CRUD operations, or authenticating users. We take care of it all.
+AdonisJS vise à vous fournir tous les outils nécessaires pour créer une application backend robuste from scratch. Qu'il s'agisse d'envoyer des emails, de valider les entrées utilisateur, d'effectuer des opérations CRUD ou d'authentifier des utilisateurs. Nous nous occupons de tout.
 
-### Modern and Type-safe
+### Moderne et type-safe
 
-AdonisJS is built on top of modern JavaScript primitives. We use ES modules, Node.js sub-path import aliases, SWC for executing TypeScript source, and Vite for assets bundling.
+AdonisJS est construit sur des primitives JavaScript modernes. Nous utilisons les modules ES, les alias d'importation de sous-chemins Node.js, SWC pour exécuter le code source TypeScript et Vite pour le bundling des assets.
 
+De plus, TypeScript joue un rôle considérable dans la conception des APIs du framework. Par exemple, AdonisJS dispose de :
 
-Also, TypeScript plays a considerable role when designing the framework's APIs. For example, AdonisJS has:
+- [Un émetteur d'événements type-safe](../digging_deeper/emitter.md#making-events-type-safe)
+- [Des variables d'environnement type-safe](../getting_started/environment_variables.md)
+- [Une bibliothèque de validation type-safe](../basics/validation.md)
 
-- [Type-safe event emitter](../digging_deeper/emitter.md#making-events-type-safe)
-- [Type-safe environment variables](../getting_started/environment_variables.md)
-- [Type-safe validation library](../basics/validation.md)
+### Adoption du MVC
 
-### Embracing MVC
-
-AdonisJS embraces the classic MVC design pattern. You start by defining the routes using the functional JavaScript API, bind controllers to them and write logic to handle the HTTP requests within the controllers.
+AdonisJS adopte le modèle de conception MVC classique. Vous commencez par définir les routes en utilisant l'API JavaScript fonctionnelle, liez des contrôleurs à ces routes et écrivez la logique pour gérer les requêtes HTTP dans les contrôleurs.
 
 ```ts
 // title: start/routes.ts
@@ -45,7 +44,7 @@ const PostsController = () => import('#controllers/posts_controller')
 router.get('posts', [PostsController, 'index'])
 ```
 
-Controllers can use models to fetch data from the database and render a view (aka template) as a response.
+Les contrôleurs peuvent utiliser des modèles pour récupérer des données de la base de données et rendre une vue (template) comme réponse.
 
 ```ts
 // title: app/controllers/posts_controller.ts
@@ -60,7 +59,7 @@ export default class PostsController {
 }
 ```
 
-If you are building an API server, you can replace the view layer with a JSON response. But, the flow of handling and responding to the HTTP requests remains the same.
+Si vous construisez une API, vous pouvez remplacer la couche vue par une réponse JSON. Mais le processus de gestion et de réponse aux requêtes HTTP reste le même.
 
 ```ts
 // title: app/controllers/posts_controller.ts
@@ -75,8 +74,8 @@ export default class PostsController {
     // delete-end
     // insert-start
     /**
-     * Posts array will be serialized to JSON
-     * automatically.
+     * Le tableau de posts sera 
+     * automatiquement sérialisé en JSON.
      */
     return posts
     // insert-end
@@ -84,16 +83,16 @@ export default class PostsController {
 }
 ```
 
-## Guides assumptions
+## À propos de ce guide
 
-The AdonisJS documentation is written as a reference guide, covering the usage and the API of several packages and modules maintained by the core team.
+La documentation d'AdonisJS est rédigée comme un guide de référence, couvrant l'utilisation et l'API de plusieurs packages et modules maintenus par l'équipe principale.
 
-**The guide does not teach you how to build an application from scratch**. If you are looking for a tutorial, we recommend starting your journey with [Adocasts](https://adocasts.com/). Tom (the creator of Adocasts) has created some highly quality screencasts, helping you to take the first steps with AdonisJS.
+**Le guide n'enseigne pas comment construire une application from scratch**. Si vous cherchez un tutoriel, nous vous recommandons de commencer votre voyage avec [Adocasts](https://adocasts.com/). Tom (le créateur d'Adocasts) a créé des screencasts de haute qualité, vous aidant à faire vos premiers pas avec AdonisJS.
 
-With that said, the documentation extensively covers the usage of available modules and the inner workings of the framework.
+Cela étant dit, la documentation couvre en détail l'utilisation des modules disponibles et le fonctionnement interne du framework.
 
-## Recent releases
-Following is the list of recent releases. [Click here](./releases.md) to view all the releases.
+## Versions récentes
+Voici la liste des versions récentes. [Cliquez ici](./releases.md) pour voir toutes les versions.
 
 ::include{template="partials/recent_releases"}
 

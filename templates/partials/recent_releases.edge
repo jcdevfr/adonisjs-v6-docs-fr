@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th style="width: 240px;">Package</th>
-        <th>Change</th>
-        <th style="width: 120px;">Released on</th>
+        <th>Modification</th>
+        <th style="width: 120px;">Publié le</th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@
             {{{ release.description }}}.
           </td>
           <td>
-            {{ dayjs(release.released_on).format('MMM D, YYYY') }}
+            {{ dayjs(release.released_on).format('DD-MM-YYYY') }}
           </td>
         </tr>
       @end
