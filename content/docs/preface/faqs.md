@@ -2,47 +2,49 @@
 summary: Frequently asked questions about AdonisJS, the framework, and its ecosystem.
 ---
 
-# FAQs
+# Foire aux questions
 
-## Who maintains AdonisJS?
+## Qui maintient AdonisJS ?
 
-AdonisJS is an independent project created by [Harminder Virk](https://twitter.com/AmanVirk1) in 2015. The framework is actively maintained by the [core team](https://github.com/orgs/adonisjs/people) and community contributors.
+AdonisJS est un projet indépendant créé par [Harminder Virk](https://twitter.com/AmanVirk1) en 2015. Le framework est activement maintenu par [l'équipe principale](https://github.com/orgs/adonisjs/people) et les contributeurs de la communauté.
 
-The framework creator (Harminder Virk) is the project lead and works full-time on the framework.
+Le créateur du framework (Harminder Virk) est le chef de projet et travaille à temps plein sur le framework.
 
-The project is funded through GitHub Sponsors. If you or your business benefit from AdonisJS, consider [sponsoring us to support the framework development](https://github.com/sponsors/thetutlage).
+Le projet est financé par les sponsors GitHub. Si vous ou votre entreprise bénéficiez d'AdonisJS, envisagez de [nous soutenir en devenant sponsor](https://github.com/sponsors/thetutlage) afin de contribuer au développement du framework.
 
-## How is AdonisJS licensed?
+## Quelle est la licence d'AdonisJS ?
 
-AdonisJS (the framework) and the official packages are distributed under the [MIT License](https://opensource.org/license/mit/). In addition, the source code is publicly available on [GitHub](https://github.com/adonisjs).
+AdonisJS (le framework) et les packages officiels sont distribués sous la [licence MIT](https://opensource.org/license/mit/). De plus, le code source est disponible publiquement sur [GitHub](https://github.com/adonisjs).
 
-## Is AdonisJS reliable and well-maintained?
+## AdonisJS est-il fiable et bien maintenu ?
 
-AdonisJS is used in production by [Marie Claire](https://www.marieclaire.com/), [Cleavr](https://cleavr.io), [Ledger](https://www.ledger.com/), [Cavai](https://cavai.com), [Kayako](https://kayako.com), [Renault Group](https://www.renaultgroup.com/en/), [Zakodium](https://www.zakodium.com/), [FIVB](https://www.fivb.com), and many more companies in varying capacities.
+AdonisJS est utilisé en production par [Marie Claire](https://www.marieclaire.com/), [Cleavr](https://cleavr.io), [Ledger](https://www.ledger.com/), [Cavai](https://cavai.com), [Kayako](https://kayako.com), [Renault Group](https://www.renaultgroup.com/en/), [Zakodium](https://www.zakodium.com/), [FIVB](https://www.fivb.com), et bien d'autres entreprises à différentes échelles.
 
-The framework creator works full-time on AdonisJS and ensures the framework is actively improved and maintained.
+Le créateur du framework travaille à temps plein sur AdonisJS et s'assure que le framework est activement amélioré et maintenu.
 
-- During the v6 release, we migrated to the ES module system.
-- Officially maintained packages have zero security vulnerabilities reported by Snyk’s security scan.
-- We continuously work towards writing better documentation, releasing new features, and improving the existing codebase. 
+- Lors de la sortie de la version 6, nous avons migré vers le système de modules ES.
+- Les packages officiellement maintenus n'ont aucune vulnérabilité de sécurité signalée par les scans de sécurité de Snyk.
+- Nous travaillons continuellement à rédiger une meilleure documentation, à publier de nouvelles fonctionnalités et à améliorer le code existant.
 
-## Is AdonisJS fast?
+## AdonisJS est-il rapide ?
 
-When creating the framework or adding new features, we primarily focus on solving real-world problems rather than cutting down the functionality to make AdonisJS win the benchmark Olympics.
+Lors de la création du framework ou de l'ajout de nouvelles fonctionnalités, nous nous concentrons principalement sur la résolution de problèmes concrets, plutôt que de réduire les fonctionnalités pour qu'AdonisJS excelle dans des tests de performance.
 
-However, we look closer at the performance metrics and fine-tune the framework performance wherever it matters. For example:
+Cependant, nous surveillons de près les métriques de performance et optimisons le framework là où cela est nécessaire. Par exemple :
 
-- The AdonisJS HTTP server in standalone mode is [on par with Fastify in performance](https://github.com/adonisjs/http-server/blob/main/benchmarks.md). 
-- The validation layer of the framework [outperforms other popular validation libraries](https://github.com/vinejs/vine/blob/main/benchmarks.md) in the Node.js ecosystem.
+- Le serveur HTTP d'AdonisJS en mode autonome est comparable à [Fastify en termes de performance](https://github.com/adonisjs/http-server/blob/main/benchmarks.md). 
+- La couche de validation du framework [surpasse d'autres bibliothèques de validation populaires](https://github.com/vinejs/vine/blob/main/benchmarks.md) dans l'écosystème Node.js.
 
-## Do you offer paid support?
-Yes! On our website, you can learn more about the [priority support program](https://adonisjs.com/support_program).
+## Proposez-vous un support payant ?
 
-## How do I stay up to date with AdonisJS?
-Check out the following links to stay connected and up-to-date.
+Oui ! Sur notre site web, vous pouvez en savoir plus sur le [programme de support prioritaire](https://adonisjs.com/support_program).
 
-- [Discord server](https://discord.gg/vDcEjq6)
-- [X (Formerly Twitter)](https://twitter.com/adonisframework)
-- [GitHub discussions](https://github.com/orgs/adonisjs/discussions)
-- [Blog and Newsletter](https://adonisjs.com/blog?referrer=adonisjs_docs_faq)
+## Comment puis-je rester à jour avec AdonisJS ?
+
+Consultez les liens suivants pour rester connecté et informé :
+
+- [Serveur Discord](https://discord.gg/vDcEjq6)
+- [X (anciennement Twitter)](https://twitter.com/adonisframework)
+- [Discussions GitHub](https://github.com/orgs/adonisjs/discussions)
+- [Blog et newsletter](https://adonisjs.com/blog?referrer=adonisjs_docs_faq)
 - [Adocasts](https://adocasts.com/?referrer=adonisjs_docs_faq)
