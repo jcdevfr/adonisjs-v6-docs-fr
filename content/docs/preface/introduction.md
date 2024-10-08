@@ -26,15 +26,15 @@ AdonisJS vise à vous fournir tous les outils nécessaires pour créer une appli
 
 AdonisJS est construit sur des primitives JavaScript modernes. Nous utilisons les modules ES, les alias d'importation de sous-chemins Node.js, SWC pour exécuter le code source TypeScript et Vite pour le bundling des assets.
 
-De plus, TypeScript joue un rôle considérable dans la conception des APIs du framework. Par exemple, AdonisJS dispose de :
+De plus, TypeScript joue un rôle considérable dans la conception des API du framework. Par exemple, AdonisJS dispose :
 
-- [Un émetteur d'événements type-safe](../digging_deeper/emitter.md#making-events-type-safe)
-- [Des variables d'environnement type-safe](../getting_started/environment_variables.md)
-- [Une bibliothèque de validation type-safe](../basics/validation.md)
+- [d'un émetteur d'événements type-safe](../digging_deeper/emitter.md#making-events-type-safe)
+- [de variables d'environnement type-safe](../getting_started/environment_variables.md)
+- [d'une bibliothèque de validation type-safe](../basics/validation.md)
 
 ### Adoption du MVC
 
-AdonisJS adopte le modèle de conception MVC classique. Vous commencez par définir les routes en utilisant l'API JavaScript fonctionnelle, liez des contrôleurs à ces routes et écrivez la logique pour gérer les requêtes HTTP dans les contrôleurs.
+AdonisJS adopte le modèle de conception MVC classique. Vous commencez par définir les routes en utilisant l'API JavaScript fonctionnelle, vous liez des contrôleurs à ces routes et vous écrivez la logique pour gérer les requêtes HTTP dans ces contrôleurs.
 
 ```ts
 // title: start/routes.ts
@@ -59,7 +59,7 @@ export default class PostsController {
 }
 ```
 
-Si vous construisez une API, vous pouvez remplacer la couche vue par une réponse JSON. Mais le processus de gestion et de réponse aux requêtes HTTP reste le même.
+Si vous construisez une API, vous pouvez remplacer la vue par une réponse JSON. Mais le processus de gestion et de réponse aux requêtes HTTP reste le même.
 
 ```ts
 // title: app/controllers/posts_controller.ts
