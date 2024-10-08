@@ -1,5 +1,5 @@
 ---
-summary: Frequently asked questions about AdonisJS, the framework, and its ecosystem.
+summary: Questions fréquemment posées sur AdonisJS, le framework et son écosystème.
 ---
 
 # Foire aux questions
@@ -35,9 +35,9 @@ Cependant, nous surveillons de près les métriques de performance et optimisons
 - Le serveur HTTP d'AdonisJS en mode autonome est comparable à [Fastify en termes de performance](https://github.com/adonisjs/http-server/blob/main/benchmarks.md). 
 - La couche de validation du framework [surpasse d'autres bibliothèques de validation populaires](https://github.com/vinejs/vine/blob/main/benchmarks.md) dans l'écosystème Node.js.
 
-## Proposez-vous un support payant ?
+## Proposez-vous une assistance payante ?
 
-Oui ! Sur notre site web, vous pouvez en savoir plus sur le [programme de support prioritaire](https://adonisjs.com/support_program).
+Oui ! Sur notre site web, vous pouvez en savoir plus sur le [programme d'assistance prioritaire](https://adonisjs.com/support_program).
 
 ## Comment puis-je rester à jour avec AdonisJS ?
 
