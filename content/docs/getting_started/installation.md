@@ -190,7 +190,7 @@ npm init adonisjs@latest -- -K=inertia --adapter=vue --no-ssr
 
 ### Apportez votre kit de démarrage
 
-Les kits de démarrage sont des projets pré-construits hébergés avec un hébergeur de dépôt Git comme GitHub, Bitbucket ou GitLab. Vous pouvez également créer vos propres kits de démarrage et les télécharger comme ceci :
+Les kits de démarrage sont des projets pré-construits hébergés avec un hébergeur de dépôt Git comme GitHub, Bitbucket ou GitLab. Vous pouvez également créer vos propres kits de démarrage et les télécharger de la manière suivante :
 
 ```sh
 npm init adonisjs@latest -- -K="github_user/repo"
