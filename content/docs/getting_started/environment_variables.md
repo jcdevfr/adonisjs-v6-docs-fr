@@ -1,20 +1,20 @@
 ---
-summary: Learn how to use environment variables inside an AdonisJS application.
+summary: Apprenez à utiliser les variables d'environnement dans une application AdonisJS.
 ---
 
-# Environment variables
+# Variables d'environnement
 
-Environment variables serve the purpose of storing secrets like the database password, the app secret, or an API key outside of your application codebase.
+Les variables d'environnement servent à stocker des données sensibles comme le mot de passe de la base de données, la clé secrète de l'application, ou une clé API en dehors du code source de votre application.
 
-Also, environment variables can be used to have different configurations for different environments. For example, you may use a memory mailer during tests, an SMTP mailer during development, and a third-party service in production.
+De plus, les variables d'environnement peuvent être utilisées pour avoir différentes configurations pour différents environnements. Par exemple, vous pouvez utiliser un gestionnaire de mail en mémoire pendant les tests, un gestionnaire SMTP pendant le développement, et un service tiers en production.
 
-Since environment variables are supported by all operating systems, deployment platforms, and CI/CD pipelines, they have become a de-facto standard for storing secrets and environment-specific config.
+Comme les variables d'environnement sont prises en charge par tous les systèmes d'exploitation, les plateformes de déploiement et les pipelines CI/CD, elles sont devenues un standard de facto pour stocker les données sensibles et la configuration spécifique à un environnement.
 
-In this guide, we will learn how to leverage environment variables inside an AdonisJS application.
+Dans ce guide, nous allons apprendre comment exploiter les variables d'environnement dans une application AdonisJS.
 
-## Reading environment variables
+## Lecture des variables d'environnement
 
-Node.js natively exposes all the environment variables as an object through the [`process.env` global property](https://nodejs.org/dist/latest-v8.x/docs/api/process.html#process_process_env), and you may access them as follows. 
+Node.js expose nativement toutes les variables d'environnement sous forme d'objet via la [propriété globale `process.env`](https://nodejs.org/dist/latest-v8.x/docs/api/process.html#process_process_env), et vous pouvez y accéder de cette façon :
 
 ```dotenv
 process.env.NODE_ENV
@@ -22,15 +22,15 @@ process.env.HOST
 process.env.PORT
 ```
 
-## Using the AdonisJS env module
+## Utilisation du module env d'AdonisJS
 
-Reading environment variables via the `process.env` object requires no setup on the AdonisJS side, as the Node.js runtime supports it. However, in the rest of this document, we will use the AdonisJS env module for the following reasons.
+La lecture des variables d'environnement via l'objet `process.env` ne nécessite aucune configuration du côté d'AdonisJS, car l'environnement d'exécution Node.js la prend en charge. Cependant, dans le reste de ce guide, nous utiliserons le module env d'AdonisJS pour les raisons suivantes :
 
-- Ability to store and parse environment variables from multiple `.env` files.
-- Validate environment variables as soon as the application starts.
-- Have static-type safety for validated environment variables.
+- Capacité à stocker et analyser les variables d'environnement à partir de plusieurs fichiers `.env`.
+- Valider les variables d'environnement dès le démarrage de l'application.
+- Avoir une sécurité de typage statique pour les variables d'environnement validées.
 
-The env module is instantiated inside the `start/env.ts` file, and you may access it elsewhere inside your application as follows.
+Le module env est instancié dans le fichier`start/env.ts`, et vous pouvez y accéder ailleurs dans votre application de la manière suivante :
 
 ```ts
 import env from '#start/env'
@@ -39,14 +39,15 @@ env.get('NODE_ENV')
 env.get('HOST')
 env.get('PORT')
 
-// Returns 3333 when PORT is undefined
+// Renvoie 3333 quand PORT n'est pas défini
 env.get('PORT', 3333)
 ```
 
-### Sharing env module with Edge templates
-If you want to access environment variables within edge templates, then you must share the `env` module as a global variable with edge templates. 
+### Partage du module env avec les templates Edge
 
-You can [create `view.ts` as a preload file](../concepts/adonisrc_file.md#preloads) inside the `start` directory and write the following lines of code inside it.
+Si vous souhaitez accéder aux variables d'environnement dans les templates Edge, vous devez partager le module `env` comme variable globale avec les templates Edge.
+
+Vous pouvez [créer `view.ts` comme fichier de préchargement](../concepts/adonisrc_file.md#preloads) dans le répertoire `start` et y écrire les lignes de code suivantes :
 
 ```ts
 // title: start/view.ts
@@ -56,23 +57,23 @@ import edge from 'edge.js'
 edge.global('env', env)
 ```
 
-## Validating environment variables
+## Validation des variables d'environnement
 
-The validation rules for environment variables are defined inside the `start/env.ts` file using the `Env.create` method. 
+Les règles de validation pour les variables d'environnement sont définies dans le fichier `start/env.ts` à l'aide de la méthode `Env.create`. 
 
-The validation is performed automatically when you first import this file. Typically, the `start/env.ts` file is imported by one of the config files in your project. If not, then AdonisJS will import this file implicitly [before booting the application](https://github.com/adonisjs/slim-starter-kit/blob/main/bin/server.ts#L34-L36).
+La validation est effectuée automatiquement lors de la première importation de ce fichier. Généralement, le fichier `start/env.ts` est importé par l'un des fichiers de configuration de votre projet. Sinon, AdonisJS importera ce fichier implicitement [avant de démarrer l'application](https://github.com/adonisjs/slim-starter-kit/blob/main/bin/server.ts#L34-L36).
 
-The `Env.create` method accepts the validation schema as a key-value pair.
+La méthode `Env.create` accepte le schéma de validation sous forme de paires clé-valeur.
 
-- The key is the name of the environment variable.
-- The value is the function that performs the validation. It can be a custom inline function or a reference to pre-defined schema methods like `schema.string` or `schema.number`.
+- La clé est le nom de la variable d'environnement.
+- La valeur est la fonction qui effectue la validation. Il peut s'agir d'une fonction personnalisée inline ou d'une référence aux méthodes de schéma prédéfinies comme `schema.string` ou `schema.number`.
 
 ```ts
 import Env from '@adonisjs/core/env'
 
 /**
- * App root is used to locate .env files inside
- * the project root.
+ * La racine de l'application est utilisée pour localiser 
+ * les fichiers .env à la racine du projet.
  */
 const APP_ROOT = new URL('../', import.meta.url)
 
@@ -91,32 +92,34 @@ export default await Env.create(APP_ROOT, {
 })
 ```
 
-### Static-type information
-The same validation rules are used to infer the static-type information. The type information is available when using the env module.
+### Informations de typage statique
+
+Les mêmes règles de validation sont utilisées pour déduire les informations de typage statique. Ces informations de type sont disponibles lors de l'utilisation du module env.
 
 ![](./env_intellisense.jpeg)
 
-## Validator schema API
+## API du schéma de validation
 
 ### schema.string
 
-The `schema.string` method ensures the value is a valid string. Empty strings fail the validation, and you must use the optional variant to allow empty strings.
+La méthode `schema.string` s'assure que la valeur est une chaîne de caractères valide. Les chaînes vides échouent à la validation, et vous devez utiliser la variante optionnelle pour autoriser les chaînes vides.
 
 ```ts
 {
   APP_KEY: Env.schema.string()
 }
 
-// Mark APP_KEY to be optional
+// Marquer APP_KEY comme optionnel
 {
   APP_KEY: Env.schema.string.optional()
 }
 ```
 
-The string value can be validated for its formatting. Following is the list of available formats.
+La valeur de la chaîne peut être validée pour son format. Voici la liste des formats disponibles.
 
 #### host
-Validate the value to be a valid URL or an IP address.
+
+Valide que la valeur est une URL valide ou une adresse IP.
 
 ```ts
 {
@@ -125,22 +128,24 @@ Validate the value to be a valid URL or an IP address.
 ```
 
 #### url
-Validate the value to be a valid URL. Optionally, you can make the validation less strict by allowing URLs not to have `protocol` or `tld`.
+
+Valide que la valeur est une URL valide. Optionnellement, vous pouvez rendre la validation moins stricte en permettant aux URLs de ne pas avoir de `protocol` ou de `tld`.
 
 ```ts
 {
   S3_ENDPOINT: Env.schema.string({ format: 'url' })
 
-  // Allow URLs without protocol
+  // Autoriser les URLs sans protocole
   S3_ENDPOINT: Env.schema.string({ format: 'url', protocol: false })
 
-  // Allow URLs without tld
+  // Autoriser les URLs sans tld
   S3_ENDPOINT: Env.schema.string({ format: 'url', tld: false })
 }
 ```
   
 #### email
-Validate the value to be a valid email address.
+
+Valide que la valeur est une adresse email valide.
 
 ```ts
 {
@@ -150,16 +155,16 @@ Validate the value to be a valid email address.
 
 ### schema.boolean
 
-The `schema.boolean` method ensures the value is a valid boolean. Empty values fail the validation, and you must use the optional variant to allow empty values.
+La méthode `schema.boolean` s'assure que la valeur est un booléen valide. Les valeurs vides échouent à la validation, et vous devez utiliser la variante optionnelle pour autoriser les valeurs vides.
 
-The string representations of `'true'`, `'1'`, `'false'`, and `'0'` are cast to the boolean data type.
+Les représentations sous forme de chaîne `'true'`, `'1'`, `'false'` et `'0'` sont converties en type de données booléen.
 
 ```ts
 {
   CACHE_VIEWS: Env.schema.boolean()
 }
 
-// Mark it as optional
+// Le marquer comme optionnel
 {
   CACHE_VIEWS: Env.schema.boolean.optional()
 }
@@ -167,14 +172,14 @@ The string representations of `'true'`, `'1'`, `'false'`, and `'0'` are cast to 
 
 ### schema.number
 
-The `schema.number` method ensures the value is a valid number. The string representation of a number value is cast to the number data type.
+La méthode `schema.number` s'assure que la valeur est un nombre valide. La représentation sous forme de chaîne d'une valeur numérique est convertie en type de données nombre.
 
 ```ts
 {
   PORT: Env.schema.number()
 }
 
-// Mark it as optional
+// Le marquer comme optionnel
 {
   PORT: Env.schema.number.optional()
 }
@@ -182,7 +187,7 @@ The `schema.number` method ensures the value is a valid number. The string repre
 
 ### schema.enum
 
-The `schema.enum` method validates the environment variable against one of the pre-defined values. The enum options can be specified as an array of values or a TypeScript native enum type.
+La méthode `schema.enum` valide la variable d'environnement par rapport à l'une des valeurs prédéfinies. Les options d'énumération peuvent être spécifiées comme un tableau de valeurs ou un type d'énumération natif TypeScript.
 
 ```ts
 {
@@ -191,7 +196,7 @@ The `schema.enum` method validates the environment variable against one of the p
     .enum(['development', 'production'] as const)
 }
 
-// Mark it as optional
+// Le marquer comme optionnel
 {
   NODE_ENV: Env
     .schema
@@ -199,7 +204,7 @@ The `schema.enum` method validates the environment variable against one of the p
     .optional(['development', 'production'] as const)
 }
 
-// Using native enums
+// Utilisation des énumérations natives
 enum NODE_ENV {
   development = 'development',
   production = 'production'
@@ -210,10 +215,11 @@ enum NODE_ENV {
 }
 ```
 
-### Custom functions
-Custom functions can perform validations not covered by the schema API. 
+### Fonctions personnalisées
 
-The function receives the name of the environment variable as the first argument and the value as the second argument. It must return the final value post-validation.
+Les fonctions personnalisées peuvent effectuer des validations non couvertes par l'API du schéma.
+
+La fonction reçoit le nom de la variable d'environnement comme premier argument et la valeur comme second argument. Elle doit renvoyer la valeur finale après validation.
 
 ```ts
 {
@@ -231,10 +237,11 @@ The function receives the name of the environment variable as the first argument
 }
 ```
 
-## Defining environment variables
+## Définition des variables d'environnement
 
-### In development
-The environment variables are defined inside the `.env` file during development. The env module looks for this file within the project's root and automatically parses it (if it exists).
+### En développement
+
+Les variables d'environnement sont définies dans le fichier `.env` pendant le développement. Le module env recherche ce fichier à la racine du projet et l'analyse automatiquement (s'il existe).
 
 ```dotenv
 // title: .env
@@ -246,23 +253,25 @@ SESSION_DRIVER=cookie
 CACHE_VIEWS=false
 ```
 
-### In production
-Using your deployment platform to define the environment variables is recommended in production. Most modern-day deployment platforms have first-class support for defining environment variables from their web UI.
+### En production
 
-Suppose your deployment platform provides no means for defining environment variables. You can create a `.env` file in the project root or at some different location on your production server.
+Il est recommandé d'utiliser votre plateforme de déploiement pour définir les variables d'environnement en production. La plupart des plateformes de déploiement modernes offrent un support natif pour définir les variables d'environnement depuis leur interface web.
 
-AdonisJS will automatically read the `.env` file from the project root. However, you must set the `ENV_PATH` variable when the `.env` file is stored at some different location.
+Si votre plateforme de déploiement ne permet pas de définir des variables d'environnement, vous pouvez créer un fichier `.env` à la racine du projet ou à un autre emplacement sur votre serveur de production.
+
+AdonisJS lira automatiquement le fichier `.env` à la racine du projet. Cependant, vous devez définir la variable `ENV_PATH` lorsque le fichier `.env` est stocké à un autre emplacement.
 
 ```sh
-# Attempts to read .env file from project root
+# Tente de lire le fichier .env à la racine du projet
 node server.js
 
-# Reads the .env file from the "/etc/secrets" directory
+# Lit le fichier .env depuis le répertoire "/etc/secrets"
 ENV_PATH=/etc/secrets node server.js
 ```
 
-### During tests
-The environment variables specific to the test environment must be defined within the `.env.test` file. The values from this file override the values from the `.env` file.
+### Pendant les tests
+
+Les variables d'environnement spécifiques à l'environnement de test doivent être définies dans le fichier `.env.test`. Les valeurs de ce fichier remplacent les valeurs du fichier `.env`.
 
 ```dotenv
 // title: .env
@@ -279,59 +288,59 @@ ASSETS_DRIVER=fake
 ```
 
 ```ts
-// During tests
+// Pendant les tests
 import env from '#start/env'
 
 env.get('SESSION_DRIVER') // memory
 ```
 
-## All other dot-env files
+## Tous les autres fichiers dot-env
 
-Alongside the `.env` file, AdonisJS processes the environment variables from the following dot-env files. Therefore, you can optionally create these files (if needed).
+En plus du fichier `.env`, AdonisJS traite les variables d'environnement des fichiers dot-env suivants. Vous pouvez donc créer ces fichiers de manière optionnelle (si nécessaire).
 
-The file with the top-most rank overrides the values from the bottom rank files.
+Le fichier avec le rang le plus élevé remplace les valeurs des fichiers de rang inférieur.
 
 <table>
     <thead>
         <tr>
-            <th width="40px">Rank</th>
-            <th width="220px">Filename</th>
+            <th width="40px">Rang</th>
+            <th width="220px">Nom du fichier</th>
             <th>Notes</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>1st</td>
+            <td>1er</td>
             <td><code>.env.[NODE_ENV].local</code></td>
             <td>
-            Loaded for the current <code>NODE_ENV</code>. For example, if the <code>NODE_ENV</code> is set to <code>development</code>, then the <code>.env.development.local</code> file will be loaded.
+            Chargé pour le <code>NODE_ENV</code> actuel. Par exemple, si le <code>NODE_ENV</code> est défini sur <code>development</code>, alors le fichier <code>.env.development.local</code> sera chargé.
             </td>
         </tr>
         <tr>
-            <td>2nd</td>
+            <td>2ème</td>
             <td><code>.env.local</code></td>
-            <td>Loaded in all the environments except the <code>test</code> and <code>testing</code> environments</td>
+            <td>Chargé dans tous les environnements sauf les environnements <code>test</code> et <code>testing</code>.</td>
         </tr>
         <tr>
-            <td>3rd</td>
+            <td>3ème</td>
             <td><code>.env.[NODE_ENV]</code></td>
             <td>
-            Loaded for the current <code>NODE_ENV</code>. For example, if the <code>NODE_ENV</code> is set to <code>development</code>, then the <code>.env.development</code> file will be loaded.
+            Chargé pour le <code>NODE_ENV</code> actuel. Par exemple, si le <code>NODE_ENV</code> est défini sur <code>development</code>, alors le fichier <code>.env.development</code> sera chargé.
             </td>
         </tr>
         <tr>
-            <td>4th</td>
+            <td>4ème</td>
             <td><code>.env</code></td>
-            <td>Loaded in all the environments. You should add this file to <code>.gitignore</code> when storing secrets inside it.</td>
+            <td>Chargé dans tous les environnements. Vous devez ajouter ce fichier à <code>.gitignore</code> lorsque vous y stockez des données sensibles.</td>
         </tr>
     </tbody>
 </table>
 
-## Using variables inside the dot-env files
+## Utilisation des variables dans les fichiers dot-env
 
-Within dot-env files, you can reference other environment variables using the variable substitution syntax. 
+Dans les fichiers dot-env, vous pouvez faire référence à d'autres variables d'environnement en utilisant la syntaxe de substitution de variable.
 
-We compute the `APP_URL` from the `HOST` and the `PORT` properties in the following example.
+Dans l'exemple suivant, nous calculons `APP_URL` à partir des propriétés `HOST` et `PORT`.
 
 ```dotenv
 HOST=localhost
@@ -341,16 +350,16 @@ URL=$HOST:$PORT
 // highlight-end
 ```
 
-All **letter**, **numbers**, and the **underscore (_)** after the `$` sign are used to form a variable name. You must wrap the variable name inside curly braces `{}` if the name has special characters other than an underscore.
+Tous les **lettres**, **chiffres** et le **souligné (_)** après le signe `$` sont utilisés pour former un nom de variable. Vous devez entourer le nom de la variable par des accolades `{}` si le nom contient des caractères spéciaux autres qu'un souligné.
 
 ```dotenv
 REDIS-USER=admin
 REDIS-URL=localhost@${REDIS-USER}
 ```
 
-### Escaping the `$` sign
+### Échapper le signe `$`
 
-To use the `$` sign as a value, you must escape it to prevent variable substitution.
+Pour utiliser le signe `$` comme valeur, vous devez l'échapper pour empêcher la substitution de variable.
 
 ```dotenv
 PASSWORD=pa\$\$word
