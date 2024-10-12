@@ -1,54 +1,54 @@
 ---
-summary: Learn about general guidelines to deploy an AdonisJS application in production.
+summary: Découvrez les directives générales pour déployer une application AdonisJS en production.
 ---
 
-# Deployment
+# Déploiement
 
-Deploying an AdonisJS application is no different than deploying a standard Node.js application. You need a server running `Node.js >= 20.6` along with `npm` to install production dependencies.
+Le déploiement d'une application AdonisJS n'est pas différent du déploiement d'une application Node.js standard. Vous avez besoin d'un serveur exécutant `Node.js >= 20.6` ainsi que `npm` pour installer les dépendances de production.
 
-This guide will cover the generic guidelines to deploy and run an AdonisJS application in production. 
+Ce guide couvrira les directives générales pour déployer et exécuter une application AdonisJS en production.
 
-## Creating production build
+## Création de la version de production
 
-As a first step, you must create the production build of your AdonisJS application by running the `build` command.
+Comme première étape, vous devez créer la version de production de votre application AdonisJS en exécutant la commande de `build`.
 
-See also: [TypeScript build process](../concepts/typescript_build_process.md)
+Voir aussi : [Processus de build TypeScript](../concepts/typescript_build_process.md)
 
 ```sh
 node ace build
 ```
 
-The compiled output is written inside the `./build` directory. If you use Vite, its output will be written inside the `./build/public` directory.
+La résultat de la compilation est placé dans le répertoire `./build`. Si vous utilisez Vite, les fichiers générés seront placés dans le répertoire `./build/public`.
 
-Once you have created the production build, you may copy the `./build` folder to your production server. **From now on, the build folder will be the root of your application**.
+Une fois que vous avez créé la version de production, vous pouvez copier le dossier `./build` sur votre serveur de production. **À partir de maintenant, le dossier build sera la racine de votre application**.
 
-### Creating a Docker image
+### Création d'une image Docker
 
-If you are using Docker to deploy your application, you may create a Docker image using the following `Dockerfile`.
+Si vous utilisez Docker pour déployer votre application, vous pouvez créer une image Docker en utilisant le `Dockerfile` suivant.
 
 ```dockerfile
 FROM node:20.12.2-alpine3.18 AS base
 
-# All deps stage
+# Étape de toutes les dépendances
 FROM base AS deps
 WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm ci
 
-# Production only deps stage
+# Étape des dépendances de production uniquement
 FROM base AS production-deps
 WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Build stage
+# Étape de build
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 ADD . .
 RUN node ace build
 
-# Production stage
+# Étape de production
 FROM base
 ENV NODE_ENV=production
 WORKDIR /app
@@ -58,16 +58,16 @@ EXPOSE 8080
 CMD ["node", "./bin/server.js"]
 ```
 
-Feel free to modify the Dockerfile to suit your needs.
+N'hésitez pas à modifier le Dockerfile pour l'adapter à vos besoins.
 
-## Configuring a reverse proxy
+## Configuration d'un proxy inverse
 
-Node.js applications are usually [deployed behind a reverse proxy](https://medium.com/intrinsic-blog/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca) server like Nginx. So the incoming traffic on ports `80` and `443` will be handled by Nginx first and then forwarded to your Node.js application.
+Les applications Node.js sont généralement déployées [derrière un serveur proxy inverse](https://medium.com/intrinsic-blog/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca) comme Nginx. Ainsi, le trafic entrant sur les ports `80` et `443` sera d'abord géré par Nginx, puis transmis à votre application Node.js.
 
-Following is an example Nginx config file you may use as the starting point.
+Voici un exemple de fichier de configuration Nginx que vous pouvez utiliser comme point de départ.
 
 :::warning
-Make sure to replace the values inside the angle brackets `<>`.
+Assurez-vous de remplacer les valeurs entre crochets angulaires `<>`.
 :::
 
 ```nginx
@@ -91,31 +91,31 @@ server {
 }
 ```
 
-## Defining environment variables
+## Définition des variables d'environnement
 
-If you are deploying your application on a bare-bone server, like a DigitalOcean Droplet or an EC2 instance, you may use an `.env` file to define the environment variables. Ensure the file is stored securely and only authorized users can access it.
+Si vous déployez votre application sur un serveur minimaliste, comme un Droplet DigitalOcean ou une instance EC2, vous pouvez utiliser un fichier `.env` pour définir les variables d'environnement. Assurez-vous que le fichier est stocké de manière sécurisée et que seuls les utilisateurs autorisés peuvent y accéder.
 
 :::note
-If you are using a deployment platform like Heroku or Cleavr, you may use their control panel to define the environment variables.
+Si vous utilisez une plateforme de déploiement comme Heroku ou Cleavr, vous pouvez utiliser leur panneau de contrôle pour définir les variables d'environnement.
 :::
 
-Assuming you have created the `.env` file in an `/etc/secrets` directory, you must start your production server as follows.
+En supposant que vous ayez créé le fichier `.env` dans un répertoire `/etc/secrets`, vous devez démarrer votre serveur de production de la manière suivante :
 
 ```sh
 ENV_PATH=/etc/secrets node build/bin/server.js
 ```
 
-The `ENV_PATH` environment variable instructs AdonisJS to look for the `.env` file inside the mentioned directory.
+La variable d'environnement `ENV_PATH` indique à AdonisJS de chercher le fichier `.env` dans le répertoire mentionné.
 
-## Starting the production server
+## Démarrage du serveur de production
 
-You may start the production server by running the `node server.js` file. However, it is recommended to use a process manager like [pm2](https://pm2.keymetrics.io/docs/usage/quick-start).
+Vous pouvez démarrer le serveur de production en exécutant le fichier `node server.js`. Cependant, il est recommandé d'utiliser un gestionnaire de processus comme [pm2](https://pm2.keymetrics.io/docs/usage/quick-start).
 
-- PM2 will run your application in background without blocking the current terminal session.
-- It will restart the application, if your app crashes while serving requests.
-- Also, PM2 makes it super simple to run your application in [cluster mode](https://nodejs.org/api/cluster.html#cluster)
+- PM2 exécutera votre application en arrière-plan sans bloquer la session de terminal en cours.
+- Il redémarrera l'application si elle plante pendant le traitement des requêtes.
+- De plus, PM2 facilite grandement l'exécution de votre application en [mode cluster](https://nodejs.org/api/cluster.html#cluster).
 
-Following is an example [pm2 ecosystem file](https://pm2.keymetrics.io/docs/usage/application-declaration) you may use as the starting point.
+Voici un exemple de [fichier ecosystem pm2](https://pm2.keymetrics.io/docs/usage/application-declaration) que vous pouvez utiliser comme point de départ.
 
 ```js
 // title: ecosystem.config.js
@@ -133,35 +133,35 @@ module.exports = {
 ```
 
 ```sh
-// title: Start server
+// title: Démarrer le serveur
 pm2 start ecosystem.config.js
 ```
 
-## Migrating database
+## Migration de la base de données
 
-If you are using a SQL database, you must run the database migrations on the production server to create the required tables.
+Si vous utilisez une base de données SQL, vous devez exécuter les migrations de la base de données sur le serveur de production pour créer les tables requises.
 
-If you are using Lucid, you may run the following command.
+Si vous utilisez Lucid, vous pouvez exécuter la commande suivante :
 
 ```sh
 node ace migration:run --force
 ```
 
-The `--force` flag is required when running migrations in the production environment.
+Le flag `--force` est requis lors de l'exécution des migrations dans l'environnement de production.
 
-### When to run migrations
+### Quand exécuter les migrations
 
-Also, it would be best if you always run the migrations before restarting the server. Then, if the migration fails, do not restart the server.
+Il est préférable d'exécuter toujours les migrations avant de redémarrer le serveur. Si la migration échoue, ne redémarrez pas le serveur.
 
-Using a managed service like Cleavr or Heroku, they can automatically handle this use case. Otherwise, you will have to run the migration script inside a CI/CD pipeline or run it manually through SSH.
+En utilisant un service géré comme Cleavr ou Heroku, ils peuvent gérer automatiquement ce cas d'utilisation. Sinon, vous devrez exécuter le script de migration dans un pipeline CI/CD ou l'exécuter manuellement via SSH.
 
-### Do not rollback in production
+### Ne pas effectuer de rollback en production
 
-Rolling back migrations in production is a risky operation. The `down` method in your migration files usually contains destructive actions like **drop the table**, or **remove a column**, and so on.
+Effectuer un rollback des migrations en production est une opération risquée. La méthode `down` dans vos fichiers de migration contient généralement des actions destructrices comme **la suppression de table** ou **la suppression de colonne**, etc.
 
-It is recommended to turn off rollbacks in production inside the config/database.ts file and instead, create a new migration to fix the issue and run it on the production server.
+Il est recommandé de désactiver les rollbacks en production dans le fichier `config/database.ts` et à la place, créer une nouvelle migration pour corriger le problème et l'exécuter sur le serveur de production.
 
-Disabling rollbacks in production will ensure that the `node ace migration:rollback` command results in an error.
+La désactivation des rollbacks en production garantira que la commande `node ace migration:rollback` génère une erreur.
 
 ```js
 {
@@ -174,45 +174,45 @@ Disabling rollbacks in production will ensure that the `node ace migration:rollb
 }
 ```
 
-### Concurrent migrations
+### Migrations concurrentes
 
-If you are running migrations on a server with multiple instances, you must ensure that only one instance runs the migrations.
+Si vous exécutez des migrations sur un serveur avec plusieurs instances, vous devez vous assurer qu'une seule instance exécute les migrations.
 
-For MySQL and PostgreSQL, Lucid will obtain advisory locks to ensure that concurrent migration is not allowed. However, it is better to avoid running migrations from multiple servers in the first place.
+Pour MySQL et PostgreSQL, Lucid obtiendra des verrous consultatifs pour s'assurer que la migration concurrente n'est pas autorisée. Cependant, il est préférable d'éviter d'exécuter des migrations à partir de plusieurs serveurs dès le départ.
 
-## Persistent storage for file uploads
+## Stockage persistant pour les téléchargements de fichiers
 
-Environments like Amazon EKS, Google Kubernetes, Heroku, DigitalOcean Apps, and so on, run your application code inside [an ephemeral filesystem](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem), which means that each deployment, by default, will nuke the existing filesystem and creates a fresh one.
+Les environnements comme Amazon EKS, Google Kubernetes, Heroku, DigitalOcean Apps, etc., exécutent votre code d'application dans [un système de fichiers éphémère](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem), ce qui signifie que chaque déploiement, par défaut, supprimera le système de fichiers existant et en créera un nouveau.
 
-If your application allows users to upload files, you must use a persistent storage service like Amazon S3, Google Cloud Storage, or DigitalOcean Spaces instead of relying on the local filesystem.
+Si votre application permet aux utilisateurs de télécharger des fichiers, vous devez utiliser un service de stockage persistant comme Amazon S3, Google Cloud Storage ou DigitalOcean Spaces au lieu de vous fier au système de fichiers local.
 
-## Writing logs
+## Écriture des logs
 
-AdonisJS uses the [`pino` logger](../digging_deeper/logger.md) by default, which writes logs to the console in JSON format. You can either set up an external logging service to read the logs from stdout/stderr, or forward them to a local file on the same server.
+AdonisJS utilise par défaut le [logger pino](../digging_deeper/logger.md), qui écrit les logs dans la console au format JSON. Vous pouvez soit configurer un service de logging externe pour lire les logs depuis stdout/stderr, soit les transférer vers un fichier local sur le même serveur.
 
-## Serving static assets
+## Servir des ressources statiques
 
-Serving static assets effectively is essential for the performance of your application. Regardless of how fast your AdonisJS applications are, the delivery of static assets plays a massive role to a better user experience.
+Servir efficacement des ressources statiques est essentiel pour les performances de votre application. Quelle que soit la rapidité de vos applications AdonisJS, la distribution des ressources statiques joue un rôle majeur dans l'amélioration de l'expérience utilisateur.
 
-### Using a CDN
+### Utilisation d'un CDN
 
-The best approach is to use a CDN (Content Delivery Network) for delivering the static assets from your AdonisJS application.
+La meilleure approche consiste à utiliser un CDN (Content Delivery Network) pour délivrer les ressources statiques de votre application AdonisJS.
 
-The frontend assets compiled using [Vite](../basics/vite.md) are fingerprinted by default, which means that the file names are hashed based on their content. This allows you to cache the assets forever and serve them from a CDN.
+Les ressources frontend compilées à l'aide de [Vite](../basics/vite.md) sont dotées d'une empreinte unique (fingerprinted) par défaut, ce qui signifie que les noms de fichiers sont hachés en fonction de leur contenu. Cela vous permet de mettre en cache les ressources indéfiniment et de les servir depuis un CDN.
 
-Depending upon the CDN service you are using and your deployment technique, you may have to add a step to your deployment process to move the static files to the CDN server. This is how it should work in a nutshell.
+Selon le service CDN que vous utilisez et votre technique de déploiement, vous devrez peut-être ajouter une étape à votre processus de déploiement pour déplacer les fichiers statiques vers le serveur CDN. Pour faire simple, voici comment cela devrait fonctionner :
 
-1. Update the `vite.config.js` and `config/vite.ts` configuration to [use the CDN URL](../basics/vite.md#deploying-assets-to-a-cdn).
+1. Mettez à jour la configuration `vite.config.js` et `config/vite.ts` pour [utiliser l'URL du CDN](../basics/vite.md#deploying-assets-to-a-cdn).
 
-2. Run the `build` command to compile the application and the assets.
+2. Exécutez la commande de `build` pour compiler l'application et les ressources.
 
-3. Copy the output of `public/assets` to your CDN server. For example, [here is a command](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) we use to publish the assets to an Amazon S3 bucket.
+3. Copiez le contenu de `public/assets` vers votre serveur CDN. Par exemple, [voici une commande](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) que nous utilisons pour publier les ressources vers un bucket Amazon S3.
 
-### Using Nginx to deliver static assets
+### Utilisation de Nginx pour délivrer des ressources statiques
 
-Another option is to offload the task of serving assets to Nginx. If you use Vite to compile the front-end assets, you must aggressively cache all the static files since they are fingerprinted.
+Une autre option consiste à déléguer la tâche de servir les ressources à Nginx. Si vous utilisez Vite pour compiler les ressources frontend, vous devez mettre en cache de manière agressive tous les fichiers statiques car ils possèdent une empreinte unique.
 
-Add the following block to your Nginx config file. **Make sure to replace the values inside the angle brackets `<>`**.
+Ajoutez le bloc suivant à votre fichier de configuration Nginx. **Assurez-vous de remplacer les valeurs entre crochets angulaires `<>`**.
 
 ```nginx
 location ~ \.(jpg|png|css|js|gif|ico|woff|woff2) {
@@ -224,12 +224,12 @@ location ~ \.(jpg|png|css|js|gif|ico|woff|woff2) {
 }
 ```
 
-### Using AdonisJS static file server
+### Utilisation du serveur de fichiers statiques d'AdonisJS
 
-You can also rely on the [AdonisJS inbuilt static file server](../basics/static_file_server.md) to serve the static assets from the `public` directory to keep things simple.
+Vous pouvez également vous fier au [serveur de fichiers statiques intégré d'AdonisJS](../basics/static_file_server.md) pour servir les ressources statiques depuis le répertoire `public` afin de simplifier les choses.
 
-No additional configuration is required. Just deploy your AdonisJS application as usual, and the request for static assets will be served automatically.
+Aucune configuration supplémentaire n'est requise. Déployez simplement votre application AdonisJS comme d'habitude, et les requêtes pour les ressources statiques seront automatiquement servies.
 
-:::warn
-The static file server is not recommended for production use. It is best to use a CDN or Nginx to serve static assets.
+:::warning
+Le serveur de fichiers statiques n'est pas recommandé pour une utilisation en production. Il est préférable d'utiliser un CDN ou Nginx pour servir les ressources statiques.
 :::
