@@ -118,11 +118,11 @@ Le kit de démarrage web est composé des packages suivants :
 </tr>
 <tr>
 <td><code>@adonisjs/static</code></td>
-<td>Middleware pour servir des assets statiques depuis le répertoire <code>/public</code> de votre application.</td>
+<td>Middleware pour servir des ressources statiques depuis le répertoire <code>/public</code> de votre application.</td>
 </tr>
 <tr>
 <td><code>vite</code></td>
-<td><a href="https://vitejs.dev/">Vite</a> est utilisé pour compiler les assets frontend.
+<td><a href="https://vitejs.dev/">Vite</a> est utilisé pour compiler les ressources frontend.
 </td>
 </tr>
 </tbody></table>
@@ -236,7 +236,7 @@ Les applications AdonisJS étant écrites en TypeScript, elles doivent être com
 
 Vous pouvez créer la sortie JavaScript en utilisant la commande `node ace build`. La sortie JavaScript est écrite dans le répertoire `build`.
 
-Lorsque Vite est configuré, cette commande compile également les assets frontend en utilisant Vite et écrit la sortie dans le répertoire `build/public`.
+Lorsque Vite est configuré, cette commande compile également les ressources frontend en utilisant Vite et écrit la sortie dans le répertoire `build/public`.
 
 Voir aussi : [Processus de build TypeScript](../concepts/typescript_build_process.md).
 
