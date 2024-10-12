@@ -4,7 +4,7 @@ summary: Apprenez à lire et à mettre à jour les valeurs de la configuration d
 
 # Configuration
 
-Les fichiers de configuration de votre application AdonisJS sont stockés dans le répertoire `config`. Une nouvelle application AdonisJS est livrée avec quelques fichiers préexistants utilisés par le noyau du framework et les packages installés.
+Les fichiers de configuration de votre application AdonisJS sont stockés dans le répertoire `config`. Une nouvelle application AdonisJS est accompagnée de quelques fichiers préexistants utilisés par le noyau du framework et les packages installés.
 
 N'hésitez pas à créer des fichiers supplémentaires dont votre application a besoin dans le répertoire `config`.
 
