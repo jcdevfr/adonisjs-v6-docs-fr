@@ -4,7 +4,7 @@ summary: Contribuer aux projets AdonisJS est un excellent moyen de rendre servic
 
 # Contribuer
 
-Ceci est un guide général de contribution pour tous les dépôts [AdonisJS](https://github.com/adonisjs). . Veuillez lire attentivement ce guide avant de contribuer à l'un des dépôts 🙏
+Ceci est un guide général de contribution pour tous les dépôts [AdonisJS](https://github.com/adonisjs). Veuillez lire attentivement ce guide avant de contribuer à l'un des dépôts 🙏
 
 Le code n'est pas la seule façon de contribuer. Voici d'autres moyens de contribuer et de faire partie de la communauté :
 
