@@ -24,7 +24,7 @@ AdonisJS vise à vous fournir tous les outils nécessaires pour créer une appli
 
 ### Moderne et type-safe
 
-AdonisJS s'appuie sur des fonctionnalités modernes de JavaScript. Nous utilisons les modules ES, les alias d'importation de sous-chemins Node.js, SWC pour exécuter le code source TypeScript et Vite pour le bundling des assets.
+AdonisJS s'appuie sur des fonctionnalités modernes de JavaScript. Nous utilisons les modules ES, les alias d'importation de sous-chemins Node.js, SWC pour exécuter le code source TypeScript et Vite pour le regroupement des ressources.
 
 De plus, TypeScript joue un rôle considérable dans la conception des API du framework. Par exemple, AdonisJS dispose :
 
