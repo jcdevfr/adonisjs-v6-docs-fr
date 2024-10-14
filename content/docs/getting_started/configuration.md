@@ -24,9 +24,9 @@ import { appKey } from '#config/app'
 import databaseConfig from '#config/database'
 ```
 
-## Utiliser le service de configuration
+## Utiliser le service config
 
-Le service de configuration offre une API alternative pour lire les valeurs de la configuration. Dans l'exemple suivant, nous utilisons le service de configuration pour lire la valeur `appKey` stockée dans le fichier `config/app.ts`.
+Le service config offre une API alternative pour lire les valeurs de la configuration. Dans l'exemple suivant, nous utilisons le service config pour lire la valeur `appKey` stockée dans le fichier `config/app.ts`.
 
 ```ts
 import config from '@adonisjs/core/services/config'
@@ -39,15 +39,15 @@ La méthode `config.get` accepte une clé séparée par des points et l'interpr�
 - La première partie correspond au nom du fichier à partir duquel vous souhaitez lire les valeurs, par exemple le fichier `app.ts`.
 - Le reste de la chaîne représente la clé que vous souhaitez accéder parmi les valeurs exportées, par exemple, `appKey` dans ce cas.
 
-## Service de configuration vs. importation directe des fichiers de configuration
+## Service config vs. importation directe des fichiers de configuration
 
-L'utilisation du service de configuration plutôt que l'importation directe des fichiers de configuration n'a pas d'avantages directs. Cependant, le service de configuration est le seul choix pour lire la configuration dans les packages externes et les templates Edge.
+L'utilisation du service config plutôt que l'importation directe des fichiers de configuration n'a pas d'avantages directs. Cependant, le service config est le seul choix pour lire la configuration dans les packages externes et les templates Edge.
 
 ### Lecture de la configuration dans les packages externes
 
 Si vous créez un package tiers, vous ne devez pas importer directement les fichiers de configuration depuis l'application utilisateur car cela rendrait votre package étroitement couplé à la structure des dossiers de l'application hôte.
 
-À la place, vous devez utiliser le service de configuration pour accéder aux valeurs de la configuration à l'intérieur d'un fournisseur de services. Par exemple :
+À la place, vous devez utiliser le service config pour accéder aux valeurs de la configuration à l'intérieur d'un fournisseur de services. Par exemple :
 
 ```ts
 import { ApplicationService } from '@adonisjs/core/types'
@@ -108,16 +108,16 @@ Assurez-vous de mettre à jour l'alias d'importation dans le fichier `package.js
 
 Les fichiers de configuration stockés dans le répertoire `config` sont importés pendant la phase de démarrage de l'application. Par conséquent, les fichiers de configuration ne peuvent pas dépendre du code de l'application.
 
-Par exemple, si vous essayez d'importer et d'utiliser le service de routing dans le fichier `config/app.ts`, l'application ne démarrera pas. C'est parce que le service de routing n'est pas configuré tant que l'application n'est pas dans un état `initialisé`.
+Par exemple, si vous essayez d'importer et d'utiliser le service router dans le fichier `config/app.ts`, l'application ne démarrera pas. C'est parce que le service router n'est pas configuré tant que l'application n'est pas dans un état `initialisé`.
 
 Fondamentalement, cette limitation a un impact positif sur votre code car le code de l'application devrait dépendre de la configuration, et non l'inverse.
 
 ## Mise à jour de la configuration pendant l'exécution
 
-Vous pouvez modifier les valeurs de la configuration pendant l'exécution en utilisant le service de configuration. La méthode `config.set` met à jour la valeur en mémoire, et aucun changement n'est apporté aux fichiers sur le disque.
+Vous pouvez modifier les valeurs de la configuration pendant l'exécution en utilisant le service config. La méthode `config.set` met à jour la valeur en mémoire, et aucun changement n'est apporté aux fichiers sur le disque.
 
 :::note
-La valeur de la configuration est modifiée pour toute l'application, pas seulement pour une seule requête HTTP. C'est parce que Node.js n'est pas un environnement d'exécution multithread, et la mémoire dans Node.js est partagée entre plusieurs requêtes HTTP.
+La configuration est modifiée pour toute l'application, pas seulement pour une seule requête HTTP. C'est parce que Node.js n'est pas un environnement d'exécution multithread, et la mémoire dans Node.js est partagée entre plusieurs requêtes HTTP.
 :::
 
 ```ts
