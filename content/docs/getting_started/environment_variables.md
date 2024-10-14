@@ -47,7 +47,7 @@ env.get('PORT', 3333)
 
 Si vous souhaitez accéder aux variables d'environnement dans les templates Edge, vous devez partager le module `env` comme variable globale avec les templates Edge.
 
-Vous pouvez [créer `view.ts` comme fichier de préchargement](../concepts/adonisrc_file.md#preloads) dans le répertoire `start` et y écrire les lignes de code suivantes :
+Vous pouvez [créer `view.ts` comme fichier à précharger](../concepts/adonisrc_file.md#preloads) dans le répertoire `start` et y écrire les lignes de code suivantes :
 
 ```ts
 // title: start/view.ts
