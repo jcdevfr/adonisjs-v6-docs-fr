@@ -125,7 +125,7 @@ Le répertoire `start` contient les fichiers que vous voulez importer pendant le
 
 AdonisJS n'importe pas automatiquement les fichiers du répertoire `start`. Il est simplement utilisé comme une convention pour regrouper des fichiers similaires.
 
-Nous vous recommandons de lire la documentation sur les [fichiers de préchargement](../concepts/adonisrc_file.md#preloads) et le [cycle de démarrage de l'application](../concepts/application_lifecycle.md) pour mieux comprendre quels fichiers garder dans le répertoire start.
+Nous vous recommandons de lire la documentation sur les [fichiers à précharger](../concepts/adonisrc_file.md#preloads) et le [cycle de démarrage de l'application](../concepts/application_lifecycle.md) pour mieux comprendre quels fichiers garder dans le répertoire start.
 
 ## Le répertoire `public`
 
