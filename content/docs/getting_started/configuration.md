@@ -108,7 +108,7 @@ Assurez-vous de mettre à jour l'alias d'importation dans le fichier `package.js
 
 Les fichiers de configuration stockés dans le répertoire `config` sont importés pendant la phase de démarrage de l'application. Par conséquent, les fichiers de configuration ne peuvent pas dépendre du code de l'application.
 
-Par exemple, si vous essayez d'importer et d'utiliser le service router dans le fichier `config/app.ts`, l'application ne démarrera pas. C'est parce que le service router n'est pas configuré tant que l'application n'est pas dans un état `initialisé`.
+Par exemple, si vous essayez d'importer et d'utiliser le service router dans le fichier `config/app.ts`, l'application ne démarrera pas. C'est parce que le service router n'est pas configuré tant que l'application n'est pas dans un état `booted`.
 
 Fondamentalement, cette limitation a un impact positif sur votre code car le code de l'application devrait dépendre de la configuration, et non l'inverse.
 
