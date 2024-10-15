@@ -14,11 +14,11 @@ Fondamentalement, AdonisJS [fournit une structure à vos applications](../gettin
 
 Notre vision est que les équipes utilisant AdonisJS **passent moins de temps** sur des décisions triviales comme la sélection minutieuse de packages npm pour chaque fonctionnalité mineure, l'écriture de code de liaison, les débats sur la structure parfaite des dossiers, et **consacrent plus de temps**  à la réalisation de fonctionnalités réelles critiques pour les besoins de l'entreprise.
 
-### Côté frontend
+### Côté front-end
 
-AdonisJS se concentre sur le backend et vous laisse choisir la stack frontend de votre choix.
+AdonisJS se concentre sur le backend et vous laisse choisir la stack front-end de votre choix.
 
-Si vous aimez garder les choses simples, associez AdonisJS à un [moteur de template traditionnel](../views-and-templates/introduction.md) pour générer du HTML statique côté serveur, créez une API JSON pour votre application frontend Vue/React ou utilisez [Inertia](../views-and-templates/inertia.md) pour faire fonctionner votre framework frontend préféré en parfaite harmonie.
+Si vous aimez garder les choses simples, associez AdonisJS à un [moteur de template traditionnel](../views-and-templates/introduction.md) pour générer du HTML statique côté serveur, créez une API JSON pour votre application front-end Vue/React ou utilisez [Inertia](../views-and-templates/inertia.md) pour faire fonctionner votre framework front-end préféré en parfaite harmonie.
 
 AdonisJS vise à vous fournir tous les outils nécessaires pour créer une application backend robuste from scratch. Qu'il s'agisse d'envoyer des emails, de valider les entrées utilisateur, d'effectuer des opérations CRUD ou d'authentifier des utilisateurs. Nous nous occupons de tout.
 
