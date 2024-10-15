@@ -21,8 +21,8 @@ De nombreux problèmes signalés sur les projets open source sont généralement
 
 Si vous signalez un bug, incluez autant d'informations que possible avec les exemples de code que vous avez écrits. L'échelle des bons et mauvais problèmes (issues) se présente de la façon suivante :
 
-- **PARFAIT** : Vous isolez le bug sous-jacent. Créez un test qui échoue dans le dépôt et ouvrez une issue Github à ce sujet.
-- **BON** : Vous isolez le bug sous-jacent et fournissez une reproduction minimale sous forme de dépôt Github. Antfu a écrit un excellent article sur la [raison pour laquelle les reproductions sont nécessaires](https://antfu.me/posts/why-reproductions-are-required).
+- **PARFAIT** : Vous isolez le bug. Créez un test qui échoue dans le dépôt et ouvrez une issue Github à ce sujet.
+- **BON** : Vous isolez le bug et fournissez une reproduction minimale sous forme de dépôt Github. Antfu a écrit un excellent article sur la [raison pour laquelle les reproductions sont nécessaires](https://antfu.me/posts/why-reproductions-are-required).
 - **CORRECT** : Vous exposez correctement votre problème. Partagez le code qui produit le problème. Incluez également les fichiers de configuration associés et la version du package que vous utilisez.
 Enfin, formatez correctement chaque bloc de code en suivant le [guide de syntaxe markdown de Github](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 - **MAUVAIS** : Vous posez simplement votre question en espérant que l'autre personne posera les questions pertinentes et vous aidera. Ce genre de problèmes est automatiquement fermé sans explication.
