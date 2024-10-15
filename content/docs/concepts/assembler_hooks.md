@@ -1,18 +1,18 @@
 ---
-summary: Assembler hooks are a way of executing code at specific points in the assembler lifecycle. 
+summary: Les hooks de l'assembleur sont un moyen d'exécuter du code à des moments spécifiques du cycle de vie de l'assembleur. 
 ---
 
-# Assembler hooks
+# Hooks de l'assembleur
 
-Assembler hooks are a way of executing code at specific points in the assembler lifecycle. As a reminder, the Assembler is a part of AdonisJS that enables you to launch your dev server, build your application, and run your tests. 
+Les hooks de l'assembleur sont un moyen d'exécuter du code à des moments spécifiques du cycle de vie de l'assembleur. Pour rappel, l'assembleur est une partie d'AdonisJS qui vous permet de lancer votre serveur de développement, de construire votre application et d'exécuter vos tests.
 
-These hooks can be helpful for tasks such as file generation, code compilation, or injecting custom build steps.
+Ces hooks peuvent être utiles pour des tâches telles que la génération de fichiers, la compilation de code ou l'injection d'étapes de construction personnalisées.
 
-For example, the `@adonisjs/vite` package uses the `onBuildStarting` hook to inject a step where front-end assets are built. So, when you run `node ace build`, the `@adonisjs/vite` package will build your front-end assets before the rest of the build process. This is a good example of how hooks can be used to customize the build process.
+Par exemple, le package `@adonisjs/vite` utilise le hook `onBuildStarting` pour injecter une étape où les ressources front-end sont construits. Ainsi, lorsque vous exécutez `node ace build`, le package `@adonisjs/vite` construira vos ressources front-end avant le reste du processus de construction. C'est un bon exemple de la façon dont les hooks peuvent être utilisés pour personnaliser le processus de construction.
 
-## Adding a hook
+## Ajouter un hook
 
-Assembler hooks are defined in the `adonisrc.ts` file, in the `hooks` key :
+Les hooks de l'assembleur sont définis dans le fichier `adonisrc.ts`, dans la clé `hooks` :
 
 ```ts
 import { defineConfig } from '@adonisjs/core/app'
@@ -35,20 +35,20 @@ export default defineConfig({
 })
 ```
 
-Several hooks can be defined for each stage of the assembly lifecycle. Each hook is an array of functions to be executed.
+Plusieurs hooks peuvent être définis pour chaque étape du cycle de vie de l'assemblage. Chaque hook est un tableau de fonctions à exécuter.
 
-We recommend using dynamic imports to load hooks. It ensures that hooks are not loaded unnecessarily but only when needed. If you write your hook code directly in the `adonisrc.ts` file, this may slow down the start-up of your application.
+Nous recommandons d'utiliser des importations dynamiques pour charger les hooks. Cela garantit que les hooks ne sont pas chargés inutilement mais seulement lorsque c'est nécessaire. Si vous écrivez directement votre code de hook dans le fichier `adonisrc.ts`, cela peut ralentir le démarrage de votre application.
 
-## Create a hook
+## Créer un hook
 
-A hook is just a simple function. Let's take an example of a hook that is supposed to execute a custom build task.
+Un hook n'est qu'une simple fonction. Prenons l'exemple d'un hook censé exécuter une tâche de construction personnalisée.
 
 ```ts
 // title: hooks/on_build_starting.ts
 import type { AssemblerHookHandler } from '@adonisjs/core/types/app'
 
 const buildHook: AssemblerHookHandler = async ({ logger }) => {
-  logger.info('Generating some files...')
+  logger.info('Génération de certains fichiers...')
 
   await myCustomLogic()
 }
@@ -56,9 +56,9 @@ const buildHook: AssemblerHookHandler = async ({ logger }) => {
 export default buildHook
 ```
 
-Note that the hook must be exported by default.
+Notez que le hook doit être exporté par défaut.
 
-Once this hook has been defined, all you have to do is add it to the `adonisrc.ts` file like this:
+Une fois ce hook défini, il ne vous reste plus qu'à l'ajouter au fichier `adonisrc.ts` comme ceci :
 
 ```ts
 // title: adonisrc.ts
@@ -73,24 +73,24 @@ export default defineConfig({
 })
 ```
 
-And now, every time you run `node ace build`, the `onBuildStarting` hook will be executed with the custom logic you defined.
+Et maintenant, chaque fois que vous exécuterez `node ace build`, le hook `onBuildStarting` sera exécuté avec la logique personnalisée que vous avez définie.
 
-## Hooks list
+## Liste des hooks
 
-Here's the list of available hooks:
+Voici la liste des hooks disponibles :
 
 ### onBuildStarting
 
-This hook is executed before the build starts. It is helpful for tasks such as file generation or for injecting custom build steps.
+Ce hook est exécuté avant le début de la construction. Il est utile pour des tâches telles que la génération de fichiers ou pour injecter des étapes de construction personnalisées.
 
 ### onBuildCompleted
 
-This hook is executed once the build is complete. It can also be used to customize the build process.
+Ce hook est exécuté une fois la construction terminée. Il peut également être utilisé pour personnaliser le processus de construction.
 
 ### onDevServerStarted
 
-This hook is executed once the Adonis dev server is started. 
+Ce hook est exécuté une fois que le serveur de développement Adonis est démarré.
 
 ### onSourceFileChanged
 
-This hook is executed each time a source file (included by your `tsconfig.json` ) is modified. Your hook will receive the path of the modified file as an argument.
+Ce hook est exécuté chaque fois qu'un fichier source (inclus par votre `tsconfig.json`) est modifié. Votre hook recevra le chemin du fichier modifié comme argument.
