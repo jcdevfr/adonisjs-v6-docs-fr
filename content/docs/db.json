@@ -73,7 +73,7 @@
   },
   {
     "permalink": "concepts/assembler-hooks",
-    "title": "Hooks d'assemblage",
+    "title": "Hooks de l'assembleur",
     "contentPath": "./concepts/assembler_hooks.md",
     "category": "Concepts"
   },
@@ -151,7 +151,7 @@
   },
   {
     "permalink": "concepts/typescript-build-process",
-    "title": "Processus de build TypeScript",
+    "title": "Processus de construction TypeScript",
     "contentPath": "./concepts/typescript_build_process.md",
     "category": "Concepts"
   },
