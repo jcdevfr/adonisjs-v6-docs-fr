@@ -99,7 +99,7 @@ N'hésitez pas à créer des répertoires supplémentaires pour mieux organiser 
 
 ## Le répertoire `resources`
 
-Le répertoire `resources` contient les templates Edge, ainsi que les fichiers source de votre code frontend. En d'autres termes, le code de la couche de présentation de votre application se trouve dans le répertoire `resources`.
+Le répertoire `resources` contient les templates Edge, ainsi que les fichiers source de votre code front-end. En d'autres termes, le code de la couche de présentation de votre application se trouve dans le répertoire `resources`.
 
 ```
 ├── resources
@@ -129,11 +129,11 @@ Nous vous recommandons de lire la documentation sur les [fichiers à précharger
 
 ## Le répertoire `public`
 
-Le répertoire `public` héberge les ressources statiques comme les fichiers CSS, les images, les polices ou le JavaScript frontend.
+Le répertoire `public` héberge les ressources statiques comme les fichiers CSS, les images, les polices ou le JavaScript front-end.
 
-Ne confondez pas le répertoire `public` avec le répertoire `resources`. Le répertoire resources contient le code source de votre application frontend, et le répertoire public contient le résultat compilé.
+Ne confondez pas le répertoire `public` avec le répertoire `resources`. Le répertoire resources contient le code source de votre application front-end, et le répertoire public contient le résultat compilé.
 
-Lorsque vous utilisez Vite, vous devez stocker les ressources frontend dans les répertoires `resources/<SUB_DIR>` et laisser le compilateur Vite créer les fichiers finaux dans le répertoire `public`.
+Lorsque vous utilisez Vite, vous devez stocker les ressources front-end dans les répertoires `resources/<SUB_DIR>` et laisser le compilateur Vite créer les fichiers finaux dans le répertoire `public`.
 
 D'autre part, si vous n'utilisez pas Vite, vous pouvez créer des fichiers directement dans le répertoire `public` et y accéder en utilisant le nom du fichier. Par exemple, vous pouvez accéder au fichier `./public/style.css` à partir de l'URL `http://localhost:3333/style.css`.
 
