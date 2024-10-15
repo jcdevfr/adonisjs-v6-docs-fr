@@ -1,26 +1,23 @@
 ---
-summary: Learn about the Application class and how to access the environment, state, and make URLs and paths to project files.
+summary: Découvrez la classe Application et apprenez à accéder à l'environnement, à l'état et à créer des URL et des chemins d'accès aux fichiers du projet.
 ---
 
 # Application
 
-The [Application](https://github.com/adonisjs/application/blob/main/src/application.ts) class does all the heavy lifting of wiring together an AdonisJS application. You can use this class to know about the environment in which your app is running, get the current state of the application, or make paths to specific directories.
+La classe [Application](https://github.com/adonisjs/application/blob/main/src/application.ts) effectue l'essentiel du travail pour connecter les différents éléments d'une application AdonisJS. Vous pouvez utiliser cette classe pour connaître l'environnement dans lequel votre application s'exécute, obtenir l'état actuel de l'application ou créer des chemins vers des répertoires spécifiques.
 
-See also: [Application lifecycle](./application_lifecycle.md)
+Voir aussi : [Cycle de vie de l'application](./application_lifecycle.md)
 
-## Environment 
+## Environnement
 
-The environment refers to the application runtime environment. The application is always booted in one of the following known environments. 
+L'environnement fait référence à l'environnement d'exécution de l'application. L'application est toujours démarrée dans l'un des environnements connus suivants.
 
-- `web` environment refers to the process started for the HTTP server.
+- L'environnement `web` fait référence au processus démarré pour le serveur HTTP.
+- L'environnement `console` fait référence aux commandes Ace, à l'exception de la commande REPL.
+- L'environnement `repl` fait référence au processus démarré à l'aide de la commande `node ace repl`.
+- Enfin, l'environnement de `test` fait référence au processus démarré à l'aide de la commande `node ace test`.
 
-- `console` environment refers to the Ace commands except for the REPL command.
-
-- `repl` environment refers to the process started using the `node ace repl` command.
-
-- Finally, the `test` environment refers to the process started using the `node ace test` command.
-
-You can access the application environment using the `getEnvironment` method.
+Vous pouvez accéder à l'environnement de l'application en utilisant la méthode `getEnvironment`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -28,9 +25,9 @@ import app from '@adonisjs/core/services/app'
 console.log(app.getEnvironment())
 ```
 
-You can also switch the application environment before it has been booted. A great example of this is the REPL command. 
+Vous pouvez également changer l'environnement de l'application avant qu'elle ne soit démarrée. Un excellent exemple de cela est la commande REPL.
 
-The `node ace repl` command starts the application in the `console` environment, but the command internally switches the environment to `repl` before presenting the REPL prompt.
+La commande `node ace repl` démarre l'application dans l'environnement `console`, mais en interne, la commande bascule l'environnement vers `repl` avant d'afficher l'invite REPL.
 
 ```ts
 if (!app.isBooted) {
@@ -38,9 +35,9 @@ if (!app.isBooted) {
 }
 ```
 
-## Node environment
+## Environnement Node
 
-You can access the Node.js environment using the `nodeEnvironment` property. The value is a reference to the `NODE_ENV` environment variable. However, the value is further normalized to be consistent.
+Vous pouvez accéder à l'environnement `Node.js` en utilisant la propriété `nodeEnvironment`. La valeur est une référence à la variable d'environnement `NODE_ENV`. Cependant, la valeur est normalisée pour être cohérente.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -56,43 +53,39 @@ console.log(app.nodeEnvironment)
 | prod     | production    |
 | testing  | test          |
 
-Also, you can use the following properties as a shorthand to know the current environment.
+De plus, vous pouvez utiliser les propriétés suivantes comme raccourci pour connaître l'environnement actuel.
 
-- `inProduction`: Check if the application is running in the production environment.
-- `inDev`: Check if the application is running in the development environment.
-- `inTest`: Check if the application is running in the test environment.
+- `inProduction` : Vérifie si l'application s'exécute dans l'environnement de production.
+- `inDev` : Vérifie si l'application s'exécute dans l'environnement de développement.
+- `inTest` : Vérifie si l'application s'exécute dans l'environnement de test.
 
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// Is in production
+// En production
 app.inProduction
 app.nodeEnvironment === 'production'
 
-// Is in development
+// En développement
 app.inDev
 app.nodeEnvironment === 'development'
 
-// Is in the test
+// En test
 app.inTest
 app.nodeEnvironment === 'test'
 ```
 
-## State
+## État
 
-The state refers to the current state of the application. The framework features you can access significantly depend upon the current state of the application. For example, you cannot access the [container bindings](./dependency_injection.md#container-bindings) or [container services](./container_services.md) until the app is in a `booted` state.
+L'état fait référence à l'état actuel de l'application. Les fonctionnalités du framework auxquelles vous pouvez accéder dépendent considérablement de l'état actuel de l'application. Par exemple, vous ne pouvez pas accéder aux [liaisons du conteneur](./dependency_injection.md#container-bindings) ou aux [services du conteneur](./container_services.md) tant que l'application n'est pas dans un état `booted`.
 
-The application is always in one of the following known states.
+L'application est toujours dans l'un des états connus suivants.
 
-- `created`: It is the default state of the application.
-
-- `initiated`: In this state, we parse/validate the environment variables and process the `adonisrc.ts` file.
-
-- `booted`: The application service providers are registered and booted at this state.
-
-- `ready`: The ready state varies between different environments. For example, in the `web` environment, the ready state means the application is ready to accept new HTTP requests.
-
-- `terminated`: The application has been terminated, and the process will exit shortly. The application will not accept new HTTP requests in the `web` environment.
+- `created` : C'est l'état par défaut de l'application.
+- `initiated` : Dans cet état, nous analysons/validons les variables d'environnement et traitons le fichier `adonisrc.ts`.
+- `booted` : Les fournisseurs de services de l'application sont enregistrés et démarrés dans cet état.
+- `ready` : L'état ready varie selon les différents environnements. Par exemple, dans l'environnement `web`, l'état ready signifie que l'application est prête à accepter de nouvelles requêtes HTTP.
+- `terminated` : L'application a été arrêtée et le processus va bientôt se terminer. L'application n'acceptera pas de nouvelles requêtes HTTP dans l'environnement `web`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -100,46 +93,46 @@ import app from '@adonisjs/core/services/app'
 console.log(app.getState())
 ```
 
-You can also use the following shorthand properties to know whether the application is in a given state.
+Vous pouvez également utiliser les propriétés raccourcies suivantes pour savoir si l'application est dans un état donné.
 
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// App is booted
+// L'application est démarrée
 app.isBooted
 app.getState() !== 'created' && app.getState() !== 'initiated'
 
-// App is ready
+// L'application est prête
 app.isReady
 app.getState() === 'ready'
 
-// gracefully attempting to terminate the app
+// Tentative d'arrêt en douceur de l'application
 app.isTerminating
 
-// App has been terminated
+// L'application a été arrêtée
 app.isTerminated
 app.getState() === 'terminated'
 ```
 
-## Listening for process signals
+## Écouter des signaux de processus
 
-You can listen for [POSIX signals](https://man7.org/linux/man-pages/man7/signal.7.html) using the `app.listen`, or `app.listenOnce` methods. Under the hood, we register the listener with the Node.js `process` object.
+Vous pouvez écouter les [signaux POSIX](https://man7.org/linux/man-pages/man7/signal.7.html) en utilisant les méthodes `app.listen` ou `app.listenOnce`. En interne, nous enregistrons l'écouteur avec l'objet `process` de Node.js.
 
 ```ts
 import app from '@adonisjs/core/services/app'
 
-// Listen for a SIGTERM signal
+// Écouter un signal SIGTERM
 app.listen('SIGTERM', () => {
 })
 
-// Listen once for a SIGTERM signal
+// Écouter une fois un signal SIGTERM
 app.listenOnce('SIGTERM', () => {
 })
 ```
 
-At times, you might want to register the listeners conditionally. For example, listen to the `SIGINT` signal when running inside the pm2 environment.
+Parfois, vous voudrez peut-être enregistrer les écouteurs de manière conditionnelle. Par exemple, écouter le signal `SIGINT` lors de l'exécution dans l'environnement pm2.
 
-You can use the `listenIf` or `listenOnceIf` methods to register a listener conditionally. The listener is only registered when the first argument's value is truthy.
+Vous pouvez utiliser les méthodes `listenIf` ou `listenOnceIf` pour enregistrer un écouteur de manière conditionnelle. L'écouteur n'est enregistré que lorsque la valeur du premier argument est vraie.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -151,9 +144,9 @@ app.listenOnceIf(app.managedByPm2, 'SIGTERM', () => {
 })
 ```
 
-## Notifying parent process
+## Notification du processus parent
 
-If your application starts as a child process, you can send messages to the parent process using the `app.notify` method. Under the hood, we use the `process.send` method.
+Si votre application démarre en tant que processus enfant, vous pouvez envoyer des messages au processus parent en utilisant la méthode `app.notify`. En interne, nous utilisons la méthode `process.send`.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -167,13 +160,13 @@ app.notify({
 })
 ```
 
-## Making URLs and paths to project files
+## Création d'URL et de chemins vers les fichiers du projet
 
-Instead of self-constructing absolute URLs or paths to project files, we highly recommend using the following helpers.
+Au lieu de construire vous-même des URL absolues ou des chemins vers les fichiers du projet, nous vous recommandons vivement d'utiliser les helpers suivants.
 
 ### makeURL
 
-The make URL method returns a file URL to a given file or directory within the project root. For example, you may generate a URL when importing a file.
+La méthode `makeURL` renvoie une URL de fichier vers un fichier ou un répertoire spécifique du projet. Par exemple, vous pouvez générer une URL lors de l'importation d'un fichier.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -190,7 +183,7 @@ await Promise.all(files.map((file) => {
 
 ### makePath
 
-The `makePath` method returns an absolute path to a given file or directory within the project root.
+La méthode `makePath` renvoie un chemin absolu vers un fichier ou un répertoire spécifique du projet.
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -200,7 +193,7 @@ app.makePath('app/middleware/auth.ts')
 
 ### configPath
 
-Returns path to a file inside the project's config directory.
+Renvoie le chemin vers un fichier dans le répertoire config du projet.
 
 ```ts
 app.configPath('shield.ts')
@@ -212,7 +205,7 @@ app.configPath()
 
 ### publicPath
 
-Returns path to a file inside the project's public directory.
+Renvoie le chemin vers un fichier dans le répertoire public du projet.
 
 ```ts
 app.publicPath('style.css')
@@ -224,7 +217,7 @@ app.publicPath()
 
 ### providersPath
 
-Returns path to a file inside the provider's directory.
+Renvoie le chemin vers un fichier dans le répertoire des fournisseurs.
 
 ```ts
 app.providersPath('app_provider')
@@ -236,7 +229,7 @@ app.providersPath()
 
 ### factoriesPath
 
-Returns path to a file inside the database factories directory.
+Renvoie le chemin vers un fichier dans le répertoire des factories de la base de données.
 
 ```ts
 app.factoriesPath('user.ts')
@@ -247,7 +240,8 @@ app.factoriesPath()
 ```
 
 ### migrationsPath
-Returns path to a file inside the database migrations directory.
+
+Renvoie le chemin vers un fichier dans le répertoire des migrations de la base de données.
 
 ```ts
 app.migrationsPath('user.ts')
@@ -258,7 +252,8 @@ app.migrationsPath()
 ```
 
 ### seedersPath
-Returns path to a file inside the database seeders directory.
+
+Renvoie le chemin vers un fichier dans le répertoire des seeders de la base de données.
 
 ```ts
 app.seedersPath('user.ts')
@@ -269,7 +264,8 @@ app.seedersPath()
 ```
 
 ### languageFilesPath
-Returns path to a file inside languages directory.
+
+Renvoie le chemin vers un fichier dans le répertoire des langues.
 
 ```ts
 app.languageFilesPath('en/messages.json')
@@ -280,7 +276,8 @@ app.languageFilesPath()
 ```
 
 ### viewsPath
-Returns path to a file inside the views directory.
+
+Renvoie le chemin vers un fichier dans le répertoire des vues.
 
 ```ts
 app.viewsPath('welcome.edge')
@@ -291,7 +288,8 @@ app.viewsPath()
 ```
 
 ### startPath
-Returns path to a file inside the start directory.
+
+Renvoie le chemin vers un fichier dans le répertoire start.
 
 ```ts
 app.startPath('routes.ts')
@@ -303,7 +301,7 @@ app.startPath()
 
 ### tmpPath
 
-Returns path to a file inside the `tmp` directory within the project root.
+Renvoie le chemin vers un fichier dans le répertoire `tmp` à la racine du projet.
 
 ```ts
 app.tmpPath('logs/mail.txt')
@@ -315,7 +313,7 @@ app.tmpPath()
 
 ### httpControllersPath
 
-Returns path to a file inside the HTTP controllers directory.
+Renvoie le chemin vers un fichier dans le répertoire des contrôleurs HTTP.
 
 ```ts
 app.httpControllersPath('users_controller.ts')
@@ -327,7 +325,7 @@ app.httpControllersPath()
 
 ### modelsPath
 
-Returns path to a file inside the model's directory.
+Renvoie le chemin vers un fichier dans le répertoire des modèles.
 
 ```ts
 app.modelsPath('user.ts')
@@ -339,7 +337,7 @@ app.modelsPath()
 
 ### servicesPath
 
-Returns path to a file inside the services directory.
+Renvoie le chemin vers un fichier dans le répertoire des services.
 
 ```ts
 app.servicesPath('user.ts')
@@ -351,7 +349,7 @@ app.servicesPath()
 
 ### exceptionsPath
 
-Returns path to a file inside the exceptions directory.
+Renvoie le chemin vers un fichier dans le répertoire des exceptions.
 
 ```ts
 app.exceptionsPath('handler.ts')
@@ -363,7 +361,7 @@ app.exceptionsPath()
 
 ### mailsPath
 
-Returns path to a file inside the mails directory.
+Renvoie le chemin vers un fichier dans le répertoire des mails.
 
 ```ts
 app.mailsPath('verify_email.ts')
@@ -375,7 +373,7 @@ app.mailsPath()
 
 ### middlewarePath
 
-Returns path to a file inside the middleware directory.
+Renvoie le chemin vers un fichier dans le répertoire des middlewares.
 
 ```ts
 app.middlewarePath('auth.ts')
@@ -387,19 +385,19 @@ app.middlewarePath()
 
 ### policiesPath
 
-Returns path to a file inside the policies directory.
+Renvoie le chemin vers un fichier dans le répertoire des policies.
 
 ```ts
 app.policiesPath('posts.ts')
-// /project_root/app/polices/posts.ts
+// /project_root/app/policies/posts.ts
 
 app.policiesPath()
-// /project_root/app/polices
+// /project_root/app/policies
 ```
 
 ### validatorsPath
 
-Returns path to a file inside the validators directory.
+Renvoie le chemin vers un fichier dans le répertoire des validateurs.
 
 ```ts
 app.validatorsPath('create_user.ts')
@@ -411,7 +409,7 @@ app.validatorsPath()
 
 ### commandsPath
 
-Returns path to a file inside the commands directory.
+Renvoie le chemin vers un fichier dans le répertoire des commandes.
 
 ```ts
 app.commandsPath('greet.ts')
@@ -423,7 +421,7 @@ app.commandsPath()
 
 ### eventsPath
 
-Return path to a file inside the events directory.
+Renvoie le chemin vers un fichier dans le répertoire des événements.
 
 ```ts
 app.eventsPath('user_created.ts')
@@ -435,7 +433,7 @@ app.eventsPath()
 
 ### listenersPath
 
-Return path to a file inside the listeners directory.
+Renvoie le chemin vers un fichier dans le répertoire des écouteurs.
 
 ```ts
 app.listenersPath('send_invoice.ts')
@@ -445,18 +443,18 @@ app.listenersPath()
 // /project_root/app/listeners
 ```
 
-## Generators
+## Générateurs
 
-Generators are used to create class names and file names for different entities. For example, you may use the `generators.controllerFileName` method to generate the filename for a controller.
+Les générateurs sont utilisés pour créer des noms de classes et de fichiers pour différentes entités. Par exemple, vous pouvez utiliser la méthode `generators.controllerFileName` pour générer le nom de fichier d'un contrôleur.
 
 ```ts
 import app from '@adonisjs/core/services/app'
 
 app.generators.controllerFileName('user')
-// output - users_controller.ts
+// Résultat - users_controller.ts
 
 app.generators.controllerName('user')
-// output - UsersController
+// Résultat - UsersController
 ```
 
-Please [reference the `generators.ts` source code](https://github.com/adonisjs/application/blob/main/src/generators.ts) to view the list of available generators.
+Veuillez vous [référer au code source generators.ts](https://github.com/adonisjs/application/blob/main/src/generators.ts) pour voir la liste des générateurs disponibles.
