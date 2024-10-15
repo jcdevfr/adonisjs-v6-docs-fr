@@ -10,9 +10,9 @@ Ce guide couvrira les directives générales pour déployer et exécuter une app
 
 ## Création de la version de production
 
-Comme première étape, vous devez créer la version de production de votre application AdonisJS en exécutant la commande de `build`.
+Comme première étape, vous devez créer la version de production de votre application AdonisJS en exécutant la commande de `construction`.
 
-Voir aussi : [Processus de build TypeScript](../concepts/typescript_build_process.md)
+Voir aussi : [Processus de construction TypeScript](../concepts/typescript_build_process.md)
 
 ```sh
 node ace build
@@ -41,7 +41,7 @@ WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Étape de build
+# Étape de construction
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
@@ -198,19 +198,19 @@ Servir efficacement des ressources statiques est essentiel pour les performances
 
 La meilleure approche consiste à utiliser un CDN (Content Delivery Network) pour délivrer les ressources statiques de votre application AdonisJS.
 
-Les ressources frontend compilées à l'aide de [Vite](../basics/vite.md) sont dotées d'une empreinte unique (fingerprinted) par défaut, ce qui signifie que les noms de fichiers sont hachés en fonction de leur contenu. Cela vous permet de mettre en cache les ressources indéfiniment et de les servir depuis un CDN.
+Les ressources front-end compilées à l'aide de [Vite](../basics/vite.md) sont dotées d'une empreinte unique (fingerprinted) par défaut, ce qui signifie que les noms de fichiers sont hachés en fonction de leur contenu. Cela vous permet de mettre en cache les ressources indéfiniment et de les servir depuis un CDN.
 
 Selon le service CDN que vous utilisez et votre technique de déploiement, vous devrez peut-être ajouter une étape à votre processus de déploiement pour déplacer les fichiers statiques vers le serveur CDN. Pour faire simple, voici comment cela devrait fonctionner :
 
 1. Mettez à jour la configuration `vite.config.js` et `config/vite.ts` pour [utiliser l'URL du CDN](../basics/vite.md#deploying-assets-to-a-cdn).
 
-2. Exécutez la commande de `build` pour compiler l'application et les ressources.
+2. Exécutez la commande de `construction` pour compiler l'application et les ressources.
 
 3. Copiez le contenu de `public/assets` vers votre serveur CDN. Par exemple, [voici une commande](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) que nous utilisons pour publier les ressources vers un bucket Amazon S3.
 
 ### Utilisation de Nginx pour délivrer des ressources statiques
 
-Une autre option consiste à déléguer la tâche de servir les ressources à Nginx. Si vous utilisez Vite pour compiler les ressources frontend, vous devez mettre en cache de manière agressive tous les fichiers statiques car ils possèdent une empreinte unique.
+Une autre option consiste à déléguer la tâche de servir les ressources à Nginx. Si vous utilisez Vite pour compiler les ressources front-end, vous devez mettre en cache de manière agressive tous les fichiers statiques car ils possèdent une empreinte unique.
 
 Ajoutez le bloc suivant à votre fichier de configuration Nginx. **Assurez-vous de remplacer les valeurs entre crochets angulaires `<>`**.
 
