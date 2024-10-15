@@ -93,7 +93,7 @@ Le kit de démarrage web est composé des packages suivants :
 </thead>
 <tbody><tr>
 <td><code>@adonisjs/core</code></td>
-<td>Le noyau du framework contenant les fonctionnalités de base dont vous pourriez avoir besoin lors de la création d'applications backend.</td>
+<td>Le noyau du framework contenant les fonctionnalités de base dont vous pourriez avoir besoin lors de la création d'applications back-end.</td>
 </tr>
 <tr>
 <td><code>edge.js</code></td>
@@ -131,7 +131,7 @@ Le kit de démarrage web est composé des packages suivants :
 
 ### Kit de démarrage API
 
-Le kit de démarrage API est conçu pour créer des API JSON. C'est une version allégée du kit de démarrage `web`. Si vous prévoyez de construire votre application front-end avec React ou Vue, vous pouvez créer votre backend AdonisJS en utilisant le kit de démarrage API.
+Le kit de démarrage API est conçu pour créer des API JSON. C'est une version allégée du kit de démarrage `web`. Si vous prévoyez de construire votre application front-end avec React ou Vue, vous pouvez créer votre back-end AdonisJS en utilisant le kit de démarrage API.
 
 ```sh
 npm init adonisjs@latest -- -K=api
