@@ -97,7 +97,7 @@
   },
   {
     "permalink": "concepts/container-services",
-    "title": "Services de conteneur",
+    "title": "Services du conteneur",
     "contentPath": "./concepts/container_services.md",
     "category": "Concepts"
   },
@@ -385,7 +385,7 @@
   },
   {
     "permalink": "testing/mocks-and-fakes",
-    "title": "Mocks & Simulations",
+    "title": "Mocks & fakes",
     "contentPath": "./testing/mocks_and_fakes.md",
     "category": "Tests"
   },
