@@ -77,7 +77,7 @@ app.nodeEnvironment === 'test'
 
 ## État
 
-L'état fait référence à l'état actuel de l'application. Les fonctionnalités du framework auxquelles vous pouvez accéder dépendent considérablement de l'état actuel de l'application. Par exemple, vous ne pouvez pas accéder aux [liaisons du conteneur](./dependency_injection.md#container-bindings) ou aux [services du conteneur](./container_services.md) tant que l'application n'est pas dans un état `booted`.
+L'état fait référence à l'état actuel de l'application. Les fonctionnalités du framework auxquelles vous pouvez accéder dépendent considérablement de l'état actuel de l'application. Par exemple, vous ne pouvez pas accéder aux [liaisons du conteneur](./dependency_injection.md#liaisons-du-conteneur) ou aux [services du conteneur](./container_services.md) tant que l'application n'est pas dans un état `booted`.
 
 L'application est toujours dans l'un des états connus suivants.
 
