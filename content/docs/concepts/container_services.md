@@ -1,47 +1,46 @@
 ---
-summary: Learn about container services and how they help in keeping your codebase clean and testable.
+summary: Découvrez les services du conteneur et comment ils contribuent à garder votre code propre et testable.
 ---
 
-# Container services
+# Services du conteneur
 
-As we discussed in the [IoC container guide](./dependency_injection.md#container-bindings), the container bindings are one of the primary reasons for the IoC container to exists in AdonisJS.
+Comme nous l'avons vu dans le [guide sur le conteneur IoC](./dependency_injection.md#container-bindings), les liaisons du conteneur sont l'une des principales raisons d'être du conteneur IoC dans AdonisJS.
 
-Container bindings keep your codebase clean from boilerplate code required to construct objects before they can be used.
+Les liaisons du conteneur permettent de garder votre code propre en évitant le code répétitif nécessaire pour construire des objets avant de pouvoir les utiliser.
 
-In the following example before you can use the `Database` class, you will have to create an instance of it. Depending the class you are constructing, you might have write a lot of boilerplate code to get all of its dependencies.
+Dans l'exemple suivant, avant de pouvoir utiliser la classe `Database`, vous devrez en créer une instance. Selon la classe que vous construisez, vous devrez peut-être écrire beaucoup de code répétitif pour obtenir toutes ses dépendances.
 
 ```ts
 import { Database } from '@adonisjs/lucid'
 export const db = new Database(
-  // inject config and other dependencies
+  // injecter la configuration et d'autres dépendances
 )
 ```
 
-However, when using an IoC container, you can offload the task of constructing a class to the container and fetch a pre-built instance.
+Cependant, en utilisant un conteneur IoC, vous pouvez déléguer la tâche de construction d'une classe au conteneur et récupérer une instance pré-construite.
 
 ```ts
 import app from '@adonisjs/core/services/app'
 const db = await app.container.make('lucid.db')
 ```
 
-## The need for container services
+## La nécessité des services du conteneur
 
-Using the container to resolve pre-configured objects is great. However, using the `container.make` method has its own downsides.
+Utiliser le conteneur pour résoudre des objets pré-configurés est excellent. Cependant, l'utilisation de la méthode `container.make` présente ses propres inconvénients.
 
-- Editors are good with auto imports. If you attempt to use a variable and the editor can guess the import path of the variable, then it will write the import statement for you. **However, this cannot work with `container.make` calls.**
+- Les éditeurs sont bons avec les importations automatiques. Si vous essayez d'utiliser une variable et que l'éditeur peut deviner le chemin d'importation de la variable, il écrira alors la déclaration d'importation pour vous. **Cependant, cela ne peut pas fonctionner avec les appels à `container.make`**.
+- Utiliser un mélange de déclarations d'importation et d'appels à `container.make` semble peu intuitif par rapport à une syntaxe unifiée pour importer/utiliser des modules.
 
-- Using a mix of import statements and `container.make` calls feels unintuitive compared to having a unified syntax for importing/using modules.
+Pour surmonter ces inconvénients, nous enveloppons les appels à `container.make` dans un module JavaScript ordinaire, afin que vous puissiez les récupérer à l'aide de l'instruction `import`.
 
-To overcome these downsides, we wrap `container.make` calls inside a regular JavaScript module, so you can fetch them using the `import` statement.
-
-For example, the `@adonisjs/lucid` package has a file called `services/db.ts` and this file has roughly the following contents.
+Par exemple, le package `@adonisjs/lucid` a un fichier appelé `services/db.ts` et ce fichier contient à peu près le contenu suivant.
 
 ```ts
 const db = await app.container.make('lucid.db')
 export { db as default }
 ```
 
-Within your application, you can replace the `container.make` call with an import pointing to the `services/db.ts` file.
+Dans votre application, vous pouvez remplacer l'appel à `container.make` par une importation pointant vers le fichier `services/db.ts`.
 
 ```ts
 // delete-start
@@ -53,15 +52,15 @@ import db from '@adonisjs/lucid/services/db'
 // insert-end
 ```
 
-As you can see, we are still relying on the container to resolve an instance of the Database class for us. However, with a layer of indirection, we can replace the `container.make` call with a regular `import` statement.
+Comme vous pouvez le voir, nous nous appuyons toujours sur le conteneur pour résoudre une instance de la classe Database pour nous. Cependant, avec une couche d'indirection, nous pouvons remplacer l'appel à `container.make` par une instruction `import` ordinaire.
 
-**The JavaScript module wrapping the `container.make` calls is known as a Container service.** Almost every package that interacts with the container ships with one or more container services.
+**Le module JavaScript enveloppant les appels à `container.make` est connu sous le nom de service du conteneur**. Presque tous les packages qui interagissent avec le conteneur sont livrés avec un ou plusieurs services du conteneur.
 
-## Container services vs. Dependency injection
+## Services du conteneur vs. Injection de dépendances
 
-Container services are an alternative to dependency injection. For example, instead of accepting the `Disk` class as a dependency, you ask the `drive` service to give you a disk instance. Let's look at some code examples.
+Les services du conteneur sont une alternative à l'injection de dépendances. Par exemple, au lieu d'accepter la classe `Disk` comme dépendance, vous demandez au service `drive` de vous donner une instance de disk. Examinons quelques exemples de code.
 
-In the following example, we use the `@inject` decorator to inject an instance of the `Disk` class.
+Dans l'exemple suivant, nous utilisons le décorateur `@inject` pour injecter une instance de la classe `Disk`.
 
 ```ts
 import { Disk } from '@adonisjs/drive'
@@ -87,7 +86,7 @@ export default class PostService {
 }
 ```
 
-When using the `drive` service, we call the `drive.use` method to get an instance of `Disk` with `s3` driver.
+Lorsque nous utilisons le service `drive`, nous appelons la méthode `drive.use` pour obtenir une instance de `Disk` avec le driver `s3`.
 
 ```ts
 import drive from '@adonisjs/drive/services/main'
@@ -107,17 +106,17 @@ export default class PostService {
 }
 ```
 
-Container services are great for keeping your code terse. Whereas, dependency injection creates a loose coupling between different application parts.
+Les services du conteneur sont excellents pour garder votre code concis. D'autre part, l'injection de dépendances crée un couplage entre les différentes parties de l'application.
 
-Choosing one over the other comes down to your personal choice and the approach you want to take to structure your code.
+Choisir l'un plutôt que l'autre dépend de votre choix personnel et de l'approche que vous souhaitez adopter pour structurer votre code.
 
-## Testing with container services
+## Tests avec les services du conteneur
 
-The outright benefit of dependency injection is the ability to swap dependencies at the time of writing tests.
+L'avantage évident de l'injection de dépendances est la possibilité d'échanger les dépendances au moment d'écrire les tests.
 
-To provide a similar testing experience with container services, AdonisJS provides first-class APIs for faking implementations when writing tests.
+Pour offrir une expérience de test similaire avec les services du conteneur, AdonisJS fournit des API de première classe pour simuler des implémentations lors de l'écriture de tests.
 
-In the following example, we call the `drive.fake` method to swap drive disks with an in-memory driver. After a fake is created, any call to the `drive.use` method will receive the fake implementation.
+Dans l'exemple suivant, nous appelons la méthode `drive.fake` pour remplacer les disques drive par un driver en mémoire. Après la création d'une simulation, tout appel à la méthode `drive.use` recevra l'implémentation factice.
 
 ```ts
 import drive from '@adonisjs/drive/services/main'
@@ -125,7 +124,7 @@ import PostService from '#services/post_service'
 
 test('save post', async ({ assert }) => {
   /**
-   * Fake s3 disk
+   * Simuler le disque s3
    */
   drive.fake('s3')
  
@@ -133,26 +132,26 @@ test('save post', async ({ assert }) => {
   await postService.save(post, coverImage)
   
   /**
-   * Write assertions
+   * Écrire les assertions
    */
   assert.isTrue(await drive.use('s3').exists(coverImage.name))
   
   /**
-   * Restore fake
+   * Restaurer le disque
    */
   drive.restore('s3')
 })
 ```
 
-## Container bindings and services
+## Liaisons du conteneur et services
 
-The following table outlines a list of container bindings and their related services exported by the framework core and first-party packages.
+Le tableau suivant présente une liste des liaisons du conteneur et de leurs services associés exportés par le noyau du framework et les packages internes.
 
 <table>
   <thead>
     <tr>
-      <th width="100px">Binding</th>
-      <th width="140px">Class</th>
+      <th width="100px">Liaison</th>
+      <th width="140px">Classe</th>
       <th>Service</th>
     </tr>
   </thead>
