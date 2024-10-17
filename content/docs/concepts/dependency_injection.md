@@ -1,26 +1,27 @@
 ---
-summary: Learn about dependency injection in AdonisJS and how to use the IoC container to resolve dependencies.
+summary: Découvrez l'injection de dépendances dans AdonisJS et comment utiliser le conteneur IoC pour résoudre les dépendances.
 ---
 
-# Dependency injection
+# Injection de dépendances
 
-At the heart of every AdonisJS application is an IoC container that can construct classes and resolve dependencies with almost zero config.
+Au coeur de chaque application AdonisJS se trouve un conteneur IoC (Inversion of Control) capable de construire des classes et de résoudre les dépendances avec presque aucune configuration.
 
-The IoC container serves the following two primary use cases.
+Le conteneur IoC répond aux deux principaux cas d'utilisation suivants :
 
-- Exposing API for first and third-party packages to register and resolve bindings from the container (More on [bindings later](#container-bindings)).
-- Automatically resolve and inject dependencies to a class constructor or class methods.
+- Exposer une API permettant aux packages internes et tiers d'enregistrer et de résoudre des liaisons (bindings) à partir du conteneur (plus de détails sur [les liaisons plus tard](#liaisons-du-conteneur)).
+- Résoudre et injecter automatiquement les dépendances dans le constructeur d'une classe ou dans les méthodes d'une classe.
 
-Let's start with injecting dependencies into a class.
+Commençons par l'injection de dépendances dans une classe.
 
-## Basic example
+## Exemple basique
 
-The automatic dependency injection relies on the [TypeScript legacy decorators implementation](https://www.typescriptlang.org/docs/handbook/decorators.html) and the [Reflection metadata](https://www.npmjs.com/package/reflect-metadata) API.
+L'injection automatique de dépendances repose sur [l'implémentation des décorateurs de TypeScript](https://www.typescriptlang.org/docs/handbook/decorators.html) et sur l'API [Metadata Reflection](https://www.npmjs.com/package/reflect-metadata).
 
-In the following example, we create an `EchoService` class and inject an instance of it into the `HomeController` class. You can follow along by copy-pasting the code examples.
+Dans l'exemple suivant, nous créons une classe `EchoService` et injectons une instance de celle-ci dans la classe `HomeController`. Vous pouvez suivre en copiant-collant les exemples de code.
 
-### Step 1. Create the Service class
-Start by creating the `EchoService` class inside the `app/services` folder.
+### Étape 1. Créer la classe Service
+
+Commencez par créer la classe `EchoService` dans le répertoire `app/services`.
 
 ```ts
 // title: app/services/echo_service.ts
@@ -31,11 +32,11 @@ export default class EchoService {
 }
 ```
 
-### Step 2. Inject the service inside the controller
+### Étape 2. Injecter le service dans le contrôleur
 
-Create a new HTTP controller inside the `app/controllers` folder. Alternatively, you can use the `node ace make:controller home` command.
+Créez un nouveau contrôleur HTTP dans le répertoire `app/controllers`. Vous pouvez également utiliser la commande `node ace make:controller home`.
 
-Import the `EchoService` in the controller file and accept it as a constructor dependency.
+Importez `EchoService` dans le fichier du contrôleur et acceptez-le comme dépendance du constructeur.
 
 ```ts
 // title: app/controllers/home_controller.ts
@@ -51,9 +52,9 @@ export default class HomeController {
 }
 ```
 
-### Step 3. Using the inject decorator
+### Étape 3. Utilisation du décorateur inject
 
-To make automatic dependency resolution work, we will have to use the `@inject` decorator on the `HomeController` class. 
+Pour que la résolution automatique des dépendances fonctionne, nous devons utiliser le décorateur `@inject` sur la classe `HomeController`.
 
 ```ts
 import EchoService from '#services/echo_service'
@@ -74,19 +75,19 @@ export default class HomeController {
 }
 ```
 
-That's all! You can now bind the `HomeController` class to a route and it will automatically receive an instance of the `EchoService` class.
+C'est tout ! Vous pouvez maintenant lier la classe `HomeController` à une route et elle recevra automatiquement une instance de la classe `EchoService`.
 
 ### Conclusion
 
-You can think of the `@inject` decorator as a spy looking at the class constructor or method dependencies and informing the container about it. 
+Vous pouvez considérer le décorateur `@inject` comme un espion qui observe les dépendances du constructeur ou des méthodes de la classe et en informe le conteneur.
 
-When the AdonisJS router asks the container to construct the `HomeController`, the container already knows about the controller dependencies.
+Lorsque le routeur d'AdonisJS demande au conteneur de construire `HomeController`, le conteneur connaît déjà les dépendances du contrôleur.
 
-## Constructing a tree of dependencies
+## Construction d'un arbre de dépendances
 
-Right now, the `EchoService` class has no dependencies, and using the container to create an instance of it might seem overkill.
+Actuellement, la classe `EchoService` n'a pas de dépendances, et l'utilisation du conteneur pour  en créer une instance peut sembler excessive.
 
-Let's update the class constructor and make it accept an instance of the `HttpContext` class.
+Mettons à jour le constructeur de la classe et faisons-lui accepter une instance de la classe `HttpContext`.
 
 ```ts
 // title: app/services/echo_service.ts
@@ -110,28 +111,23 @@ export default class EchoService {
 }
 ```
 
-Again, we must place our spy (the `@inject` decorator) on the `EchoService` class to inspect its dependencies.
+Une fois de plus, nous devons placer notre espion (le décorateur `@inject`) sur la classe `EchoService` pour inspecter ses dépendances.
 
-Voila, that's all we have to do. Without changing a single line of code inside the controller, you can re-run the code, and the `EchoService` class will receive an instance of the `HttpContext` class.
+Et voilà, c'est tout ce que nous avons à faire. Sans changer une seule ligne de code dans le contrôleur, vous pouvez ré-exécuter le code, et la classe `EchoService` recevra une instance de la classe `HttpContext`.
 
 
 :::note
-
-The great thing about using the container is that you can have deeply nested dependencies, and the container can resolve the entire tree for you. The only deal is to use the `@inject` decorator.
-
-
+Le grand avantage de l'utilisation du conteneur est que vous pouvez avoir des dépendances profondément imbriquées, et le conteneur peut résoudre l'arbre entier pour vous. La seule condition est d'utiliser le décorateur `@inject`.
 :::
 
-## Using method injection
+## Utilisation de l'injection de méthode
 
-Method injection is used to inject dependencies inside a class method. For method injection to work, you must place the `@inject` decorator before the method signature.
+L'injection de méthode est utilisée pour injecter des dépendances à l'intérieur d'une méthode de classe. Pour que l'injection de méthode fonctionne, vous devez placer le décorateur `@inject` avant la signature de la méthode.
 
-Let's continue with our previous example and move the `EchoService` dependency from the `HomeController` constructor to the `handle` method.
+Continuons avec notre exemple précédent et déplaçons la dépendance `EchoService` du constructeur de `HomeController` vers la méthode `handle`.
 
 :::note
-
-When using method injection inside a controller, remember the first parameter receives a fixed value (i.e., the HTTP context), and the rest of the parameters are resolved using the container.
-
+Lorsque vous utilisez l'injection de méthode dans un contrôleur, rappelez-vous que le premier paramètre reçoit une valeur fixe (c'est-à-dire le contexte HTTP), et le reste des paramètres est résolu en utilisant le conteneur.
 :::
 
 ```ts
@@ -157,24 +153,24 @@ export default class HomeController {
 }
 ```
 
-That's all! This time, the `EchoService` class instance will be injected inside the `handle` method.
+C'est tout ! Cette fois, l'instance de la classe `EchoService` sera injectée dans la méthode `handle`.
 
-## When to use Dependency Injection
+## Quand utiliser l'injection de dépendances
 
-Leveraging dependency injection in your projects is recommended because DI creates a loose coupling between different parts of your application. As a result, the codebase becomes easier to test and refactor.
+Il est recommandé d'utiliser l'injection de dépendances dans vos projets car elle crée un couplage souple entre les différentes parties de votre application. En conséquence, le code devient plus facile à tester et à refactoriser.
 
-However, you have to be careful and not take the idea of dependency injection to its extreme that you start to lose its benefits. For example:
+Cependant, vous devez être prudent et ne pas pousser l'idée de l'injection de dépendances à l'extrême au point d'en perdre les avantages. Par exemple :
 
-- You should not inject helper libraries like `lodash` as a dependency of your class. Import and use it directly.
-- Your codebase might not need loose coupling for components that are ever likely to get swapped or replaced. For example, you may prefer importing the `logger` service vs. injecting the `Logger` class as a dependency.
+- Vous ne devriez pas injecter des bibliothèques d'aide comme `lodash` en tant que dépendance de votre classe. Importez-les et utilisez-les directement.
+- Votre code pourrait ne pas avoir besoin de couplage pour des composants qui ne sont pas susceptibles d'être échangés ou remplacés. Par exemple, vous pourriez préférer importer le service `logger` plutôt que d'injecter la classe `Logger` en tant que dépendance.
 
-## Using the container directly 
+## Utilisation directe du conteneur
 
-Most classes within your AdonisJS application, like the **Controllers**, **Middleware**, **Event listeners**, **Validators**, and **Mailers**, are constructed using the container. Therefore you can leverage the `@inject` decorator for automatic dependency injection.
+La plupart des classes dans votre application AdonisJS, comme les **contrôleurs**, les **middlewares**, les **écouteurs d'événements**, les **validateurs** et les **mailers**, sont construites en utilisant le conteneur. Par conséquent, vous pouvez utiliser le décorateur `@inject` pour l'injection automatique de dépendances.
 
-For situations where you want to self-construct a class instance using the container, you can use the `container.make` method. 
+Pour les situations où vous voulez construire vous-même une instance de classe en utilisant le conteneur, vous pouvez utiliser la méthode `container.make`.
 
-The `container.make` method accepts a class constructor and returns an instance of it after resolving all its dependencies.
+La méthode `container.make` accepte un constructeur de classe et retourne une instance de celle-ci après avoir résolu toutes ses dépendances.
 
 ```ts
 import { inject } from '@adonisjs/core'
@@ -188,8 +184,8 @@ class SomeService {
 }
 
 /**
- * Same as making a new instance of the class, but
- * will have the benefit of automatic DI
+ * Équivalent à la création d'une nouvelle instance de la classe, mais
+ * avec l'avantage de l'injection automatique de dépendances
  */
 const service = await app.container.make(SomeService)
 
@@ -197,11 +193,11 @@ console.log(service instanceof SomeService)
 console.log(service.echo instanceof EchoService)
 ```
 
-You can use the `container.call` method to inject dependencies inside a method. The `container.call` method accepts the following arguments.
+Vous pouvez utiliser la méthode `container.call` pour injecter des dépendances dans une méthode. La méthode `container.call` accepte les arguments suivants :
 
-1. An instance of the class.
-2. The name of the method to run on the class instance. The container will resolve the dependencies and pass them to the method.
-3. An optional array of fixed parameters to pass to the method.
+1. Une instance de la classe.
+2. Le nom de la méthode à exécuter sur l'instance de la classe. Le conteneur résoudra les dépendances et les passera à la méthode.
+3. Un tableau optionnel de paramètres fixes à passer à la méthode.
 
 ```ts
 class EchoService {}
@@ -215,22 +211,22 @@ class SomeService {
 const service = await app.container.make(SomeService)
 
 /**
- * An instance of Echo class will get passed
- * the run method
+ * Une instance de la classe Echo sera passée
+ * à la méthode run
  */
 await app.container.call(service, 'run')
 ```
 
-## Container bindings
+## Liaisons du conteneur
 
-Container bindings are one of the primary reasons for the IoC container to exist in AdonisJS. Bindings act as a bridge between the packages you install and your application.
+Les liaisons du conteneur sont l'une des principales raisons de l'existence du conteneur IoC dans AdonisJS. Les liaisons agissent comme un pont entre les packages que vous installez et votre application.
 
-Bindings are essentially a key-value pair, the key is the unique identifier for the binding, and the value is a factory function that returns the value. 
+Les liaisons sont essentiellement une paire clé-valeur, la clé étant l'identifiant unique pour la liaison, et la valeur étant une fonction factory qui renvoie la valeur.
 
-- The binding name can be a `string`, a `symbol`, or a class constructor.
-- The factory function can be asynchronous and must return a value.
+- Le nom de la liaison peut être une `chaîne de caractères`, un `symbole` ou un constructeur de classe.
+- La fonction factory peut être asynchrone et doit renvoyer une valeur.
 
-You may use the `container.bind` method to register a container binding. Following is a straightforward example of registering and resolving bindings from the container.
+Vous pouvez utiliser la méthode `container.bind` pour enregistrer une liaison du conteneur. Voici un exemple simple d'enregistrement et de résolution de liaisons à partir du conteneur :
 
 ```ts
 import app from '@adonisjs/core/services/app'
@@ -246,32 +242,27 @@ app.container.bind('cache', function () {
 })
 
 const cache = await app.container.make('cache')
-console.log(cache.get('foo')) // returns foo!
+console.log(cache.get('foo')) // renvoie foo!
 ```
 
-### When to use container bindings?
+### Quand utiliser les liaisons du conteneur ?
 
-Container bindings are used for specific use cases, like registering singleton services exported by a package or self-constructing class instances when automatic dependency injection is insufficient.
+Les liaisons du conteneur sont utilisées pour des cas d'utilisation spécifiques, comme l'enregistrement de services singleton exportés par un package ou la construction manuelle d'instances de classe lorsque l'injection automatique de dépendances est insuffisante.
 
-We recommend you not make your applications unnecessarily complex by registering everything to the container. Instead, look for specific use cases in your application code before reaching for container bindings.
+Nous vous recommandons de ne pas rendre vos applications inutilement complexes en enregistrant tout dans le conteneur. Au lieu de cela, recherchez des cas d'utilisation spécifiques dans votre code d'application avant de recourir aux liaisons du conteneur.
 
-Following are some of the examples which are using container bindings inside the framework packages.
+Voici quelques exemples qui utilisent des liaisons du conteneur dans les packages du framework :
 
-- [Registering BodyParserMiddleware inside container](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L134-L139): Since the middleware class requires configuration stored inside the `config/bodyparser.ts` file, there is no way for automatic dependency injection to work. In this case, we manually construct the middleware class instance by registering it as a binding.
-- [Registering Encryption service as a singleton](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L97-L100): The Encryption class requires the `appKey` stored inside the `config/app.ts` file, therefore, we use container binding as a bridge to read the `appKey` from the user application and configure a singleton instance of the Encryption class.
-
+- [Enregistrement de BodyParserMiddleware dans le conteneur](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L134-L139) : Comme la classe middleware nécessite une configuration stockée dans le fichier `config/bodyparser.ts`, il n'y a aucun moyen pour que l'injection automatique de dépendances fonctionne. Dans ce cas, nous construisons manuellement l'instance de la classe middleware en l'enregistrant comme une liaison.
+- [Enregistrement du service Encryption comme singleton](https://github.com/adonisjs/core/blob/main/providers/app_provider.ts#L97-L100) : La classe Encryption nécessite l'`appKey` stockée dans le fichier `config/app.ts`, nous utilisons donc la liaison du conteneur comme un pont pour lire l'`appKey` de l'application utilisateur et configurer une instance singleton de la classe Encryption.
 
 :::important
-
-The concept of container bindings is not commonly used in the JavaScript ecosystem. Therefore, feel free to [join our Discord community](https://discord.gg/vDcEjq6) to clarify your doubts.
-
-
+Le concept de liaisons du conteneur n'est pas couramment utilisé dans l'écosystème JavaScript. N'hésitez donc pas à [rejoindre notre communauté Discord](https://discord.gg/vDcEjq6) pour clarifier vos doutes.
 :::
 
+### Résolution des liaisons à l'intérieur de la fonction factory
 
-### Resolving bindings inside the factory function
-
-You can resolve other bindings from the container within the binding factory function. For example, if the `MyFakeCache` class needs config from the `config/cache.ts` file, you can access it as follows.
+Vous pouvez résoudre d'autres liaisons à partir du conteneur dans la fonction factory de liaison. Par exemple, si la classe `MyFakeCache` a besoin de la configuration du fichier `config/cache.ts`, vous pouvez y accéder comme ceci :
 
 ```ts
 this.app.container.bind('cache', async (resolver) => {
@@ -284,9 +275,9 @@ this.app.container.bind('cache', async (resolver) => {
 
 ### Singletons
 
-Singletons are bindings for which the factory function is called once, and the return value is cached for the application's lifetime.
+Les singletons sont des liaisons pour lesquelles la fonction factory est appelée une seule fois, et la valeur retournée est mise en cache pour la durée de vie de l'application.
 
-You can register a singleton binding using the `container.singleton` method.
+Vous pouvez enregistrer une liaison singleton en utilisant la méthode `container.singleton`.
 
 ```ts
 this.app.container.singleton('cache', async (resolver) => {
@@ -297,17 +288,17 @@ this.app.container.singleton('cache', async (resolver) => {
 })
 ```
 
-### Binding values
+### Liaison de valeurs
 
-You can bind values directly to the container using the `container.bindValue` method.
+Vous pouvez lier des valeurs directement au conteneur en utilisant la méthode `container.bindValue`.
 
 ```ts
 this.app.container.bindValue('cache', new MyFakeCache())
 ```
 
-### Aliases
+### Alias
 
-You can define aliases for bindings using the `alias` method. The method accepts the alias name as the first parameter and a reference to an existing binding or a class constructor as the alias value.
+Vous pouvez définir des alias pour les liaisons en utilisant la méthode `alias`. La méthode accepte le nom de l'alias comme premier paramètre et une référence à une liaison existante ou un constructeur de classe comme valeur de l'alias.
 
 ```ts
 this.app.container.singleton(MyFakeCache, async () => {
@@ -317,11 +308,11 @@ this.app.container.singleton(MyFakeCache, async () => {
 this.app.container.alias('cache', MyFakeCache)
 ```
 
-### Defining static types for bindings
+### Définition de types statiques pour les liaisons
 
-You can define the static-type information for binding using [TypeScript declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html). 
+Vous pouvez définir les informations de type statique pour la liaison en utilisant la [fusion de déclarations TypeScript](https://www.typescriptlang.org/docs/handbook/declaration-merging.html).
 
-The types are defined on the `ContainerBindings` interface as a key-value pair.
+Les types sont définis sur l'interface `ContainerBindings` comme une paire clé-valeur.
 
 ```ts
 declare module '@adonisjs/core/types' {
@@ -331,20 +322,19 @@ declare module '@adonisjs/core/types' {
 }
 ```
 
-If you create a package, you can write the above code block inside the service provider file.
+Si vous créez un package, vous pouvez écrire le bloc de code ci-dessus à l'intérieur du fichier du fournisseur de services.
 
-In your AdonisJS application, you can write the above code block inside the `types/container.ts` file.
+Dans votre application AdonisJS, vous pouvez écrire le bloc de code ci-dessus à l'intérieur du fichier `types/container.ts`.
 
+## Création d'une couche d'abstraction
 
-## Creating an abstraction layer
-
-The container allows you to create an abstraction layer for your application. You can define a binding for an interface and resolve it to a concrete implementation.
+Le conteneur vous permet de créer une couche d'abstraction pour votre application. Vous pouvez définir une liaison pour une interface et la résoudre en une implémentation concrète.
 
 :::note
-This method is useful when you want to apply Hexagonal Architecture, also known as Port and Adapter principles to your application.
+Cette méthode est utile lorsque vous voulez appliquer l'architecture hexagonale, également connue sous le nom ports et adaptateurs, à votre application.
 :::
 
-Since TypeScript interfaces do not exist at runtime, you must use an abstract class constructor for your interface.
+Comme les interfaces TypeScript n'existent pas au moment de l'exécution, vous devez utiliser un constructeur de classe abstraite pour votre interface.
 
 ```ts
 export abstract class PaymentService {
@@ -353,23 +343,23 @@ export abstract class PaymentService {
 }
 ```
 
-Next, you can create a concrete implementation of the `PaymentService` interface.
+Ensuite, vous pouvez créer une implémentation concrète de l'interface `PaymentService`.
 
 ```ts
 import { PaymentService } from '#contracts/payment_service'
 
 export class StripePaymentService implements PaymentService {
   async charge(amount: number) {
-    // Charge the amount using Stripe
+    // Facturer le montant en utilisant Stripe
   }
 
   async refund(amount: number) {
-    // Refund the amount using Stripe
+    // Rembourser le montant en utilisant Stripe
   }
 }
 ```
 
-Now, you can register the `PaymentService` interface and the `StripePaymentService` concrete implementation inside the container inside your `AppProvider`.
+Maintenant, vous pouvez enregistrer l'interface `PaymentService` et l'implémentation concrète `StripePaymentService` à l'intérieur du conteneur dans votre `AppProvider`.
 
 ```ts
 // title: providers/app_provider.ts
@@ -386,7 +376,7 @@ export default class AppProvider {
 }
 ```
 
-Finally, you can resolve the `PaymentService` interface from the container and use it inside your application.
+Enfin, vous pouvez résoudre l'interface `PaymentService` à partir du conteneur et l'utiliser dans votre application.
 
 ```ts
 import { PaymentService } from '#contracts/payment_service'
@@ -404,11 +394,11 @@ export default class PaymentController {
 }
 ```
 
-## Swapping implementations during testing
+## Échange d'implémentations pendant les tests
 
-When you rely on the container to resolve a tree of dependencies, you have less/no control over the classes in that tree. Therefore, mocking/faking those classes can become harder.
+Lorsque vous vous appuyez sur le conteneur pour résoudre un arbre de dépendances, vous avez moins/pas de contrôle sur les classes de cet arbre. Par conséquent, la simulation/falsification de ces classes peut devenir plus difficile.
 
-In the following example, the `UsersController.index` method accepts an instance of the `UserService` class, and we use the `@inject` decorator to resolve the dependency and give it to the `index` method.
+Dans l'exemple suivant, la méthode `UsersController.index` accepte une instance de la classe `UserService`, et nous utilisons le décorateur `@inject` pour résoudre la dépendance et la donner à la méthode `index`.
 
 ```ts
 import UserService from '#services/user_service'
@@ -420,9 +410,9 @@ export default class UsersController {
 }
 ```
 
-Let's say during testing, you do not want to use the actual `UserService` as it makes external HTTP requests. Instead, you want to use a fake implementation.
+Disons que pendant les tests, vous ne voulez pas utiliser le véritable `UserService` car il fait des requêtes HTTP externes. Au lieu de cela, vous voulez utiliser une fausse implémentation.
 
-But first, look at the code you might write to test the `UsersController`.
+Mais d'abord, regardez le code que vous pourriez écrire pour tester le `UsersController`.
 
 ```ts
 import UserService from '#services/user_service'
@@ -436,11 +426,11 @@ test('get all users', async ({ client }) => {
 })
 ```
 
-In the above test, we interact with the `UsersController` over an HTTP request and do not have direct control over it.
+Dans le test ci-dessus, nous interagissons avec le `UsersController` via une requête HTTP et n'avons pas de contrôle direct sur celui-ci.
 
-The container provides a straightforward API to swap classes with fake implementations. You can define a swap using the `container.swap` method.
+Le conteneur fournit une API simple pour échanger des classes avec de fausses implémentations. Vous pouvez définir un échange en utilisant la méthode `container.swap`.
 
-The `container.swap` method accepts the class constructor you want to swap, followed by a factory function to return an alternative implementation.
+La méthode `container.swap` accepte le constructeur de classe que vous voulez échanger, suivi d'une fonction factory pour retourner une implémentation alternative.
 
 ```ts
 import UserService from '#services/user_service'
@@ -468,21 +458,21 @@ test('get all users', async ({ client }) => {
 })
 ```
 
-Once a swap has been defined, the container will use it instead of the actual class. You can restore the original implementation using the `container.restore` method.
+Une fois qu'un échange a été défini, le conteneur l'utilisera au lieu de la classe réelle. Vous pouvez restaurer l'implémentation originale en utilisant la méthode `container.restore`.
 
 ```ts
 app.container.restore(UserService)
 
-// Restore UserService and PostService
+// Restaurer UserService et PostService
 app.container.restoreAll([UserService, PostService])
 
-// Restore all
+// Tout restaurer
 app.container.restoreAll()
 ```
 
-## Contextual dependencies
+## Dépendances contextuelles
 
-Contextual dependencies allow you to define how a dependency should be resolved for a given class. For example, you have two services depending on the Drive Disk class.
+Les dépendances contextuelles vous permettent de définir comment une dépendance doit être résolue pour une classe donnée. Par exemple, vous avez deux services dépendant de la classe Drive Disk.
 
 ```ts
 import { Disk } from '@adonisjs/drive'
@@ -500,9 +490,9 @@ export default class PostService {
 }
 ```
 
-You want the `UserService` to receive a disk instance with the GCS driver and the `PostService` to receive a disk instance with the S3 driver. You can do so using contextual dependencies.
+Vous voulez que `UserService` reçoive une instance de disk avec le driver GCS et que `PostService` reçoive une instance de disk avec le driver S3. Vous pouvez le faire en utilisant des dépendances contextuelles.
 
-The following code must be written inside a service provider `register` method.
+Le code suivant doit être écrit à l'intérieur de la méthode `register` d'un fournisseur de service.
 
 ```ts
 import { Disk } from '@adonisjs/drive'
@@ -533,11 +523,11 @@ export default class AppProvider {
 }
 ```
 
-## Container hooks
+## Hooks du conteneur
 
-You can use the container's `resolving` hook to modify/extend the return value of the `container.make` method.
+Vous pouvez utiliser le hook `resolving` du conteneur pour modifier/étendre la valeur de retour de la méthode `container.make`.
 
-Usually, you will use hooks inside a service provider when trying to extend a particular binding. For example, the Database provider uses the `resolving` hook to register additional database-driven validation rules.
+Généralement, vous utiliserez les hooks dans un fournisseur de services lorsque vous essayez d'étendre une liaison particulière. Par exemple, le fournisseur Database utilise le hook `resolving` pour enregistrer des règles de validation supplémentaires basées sur la base de données.
 
 ```ts
 import { ApplicationService } from '@adonisjs/core/types'
@@ -555,9 +545,9 @@ export default class DatabaseProvider {
 }
 ```
 
-## Container events
+## Événements du conteneur
 
-The container emits the `container_binding:resolved` event after resolving a binding or constructing a class instance. The `event.binding` property will be a string (binding name) or a class constructor, and the `event.value` property is the resolved value.
+Le conteneur émet l'événement `container_binding:resolved` après avoir résolu une liaison ou construit une instance de classe. La propriété `event.binding` sera une chaîne de caractères (nom de la liaison) ou un constructeur de classe, et la propriété `event.value` est la valeur résolue.
 
 ```ts
 import emitter from '@adonisjs/core/services/emitter'
@@ -568,7 +558,7 @@ emitter.on('container_binding:resolved', (event) => {
 })
 ```
 
-## See also
+## Voir aussi
 
-- [The container README file](https://github.com/adonisjs/fold/blob/develop/README.md) covers the container API in the framework agnostic manner.
-- [Why do you need an IoC container?](https://github.com/thetutlage/meta/discussions/4) In this article, the framework's creator shares his reasoning for using the IoC container.
+- [Le fichier README du conteneur](https://github.com/adonisjs/fold/blob/develop/README.md) couvre l'API du conteneur de manière indépendante du framework.
+- [Pourquoi avez-vous besoin d'un conteneur IoC ?](https://github.com/thetutlage/meta/discussions/4) Dans cet article, le créateur du framework partage son raisonnement pour l'utilisation du conteneur IoC.
