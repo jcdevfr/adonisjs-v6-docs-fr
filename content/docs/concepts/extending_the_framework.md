@@ -1,20 +1,20 @@
 ---
-summary: Learn how to extend the AdonisJS framework using macros and getters.
+summary: Apprenez à étendre le framework AdonisJS en utilisant des macros et des accesseurs (getters).
 ---
 
-# Extending the framework
+# Étendre le framework
 
-The architecture of AdonisJS makes it very easy to extend the framework. We dogfood framework's core APIs to build an ecosystem of first-party packages.
+L'architecture d'AdonisJS rend très facile l'extension du framework. Nous utilisons les API principales du framework pour créer un écosystème de packages officiels.
 
-In this guide, we will explore different APIs you can use to extend the framework through a package or within your application codebase.
+Dans ce guide, nous explorerons différentes API que vous pouvez utiliser pour étendre le framework à travers un package ou au sein du code de votre application.
 
-## Macros and getters
+## Macros et accesseurs
 
-Macros and getters offer an API to add properties to the prototype of a class. You can think of them as Syntactic sugar for `Object.defineProperty`. Under the hood, we use [macroable](https://github.com/poppinss/macroable) package, and you can refer to its README for an in-depth technical explanation.
+Les macros et les accesseurs (getters) offrent une API pour ajouter des propriétés au prototype d'une classe. Vous pouvez les considérer comme du sucre syntaxique pour `Object.defineProperty`. En interne, nous utilisons le package [macroable](https://github.com/poppinss/macroable), et vous pouvez vous référer à son README pour une explication technique approfondie.
 
-Since macros and getters are added at runtime, you will have to inform TypeScript about the type information for the added property using [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html).
+Comme les macros et les accesseurs sont ajoutés à l'exécution, vous devrez informer TypeScript des informations de type pour la propriété ajoutée en utilisant la [fusion de déclarations](https://www.typescriptlang.org/docs/handbook/declaration-merging.html).
 
-You can write the code for adding macros inside a dedicated file (like the `extensions.ts`) and import it inside the service provider's `boot` method.
+Vous pouvez écrire le code pour ajouter des macros dans un fichier dédié (comme `extensions.ts`) et l'importer dans la méthode `boot` du fournisseur de services.
 
 ```ts
 // title: providers/app_provider.ts
@@ -25,7 +25,7 @@ export default class AppProvider {
 }
 ```
 
-In the following example, we add the `wantsJSON` method to the [Request](../basics/request.md) class and define its types simultaneously.
+Dans l'exemple suivant, nous ajoutons la méthode `wantsJSON` à la classe [Request](../basics/request.md) et définissons ses types simultanément.
 
 ```ts
 // title: src/extensions.ts
@@ -49,15 +49,14 @@ declare module '@adonisjs/core/http' {
   }
 }
 ```
+- Le chemin du module lors de l'appel `declare module` doit être le même que le chemin que vous utilisez pour importer la classe.
+- Le nom de l'`interface` doit être le même que le nom de la classe à laquelle vous ajoutez la macro ou l'accesseur.
 
-- The module path during the `declare module` call must be the same as the path you use to import the class.
-- The `interface` name must be the same as the class name to which you add the macro or the getter.
+### Accesseurs
 
-### Getters
+Les accesseurs sont des propriétés évaluées à la demande ajoutées à une classe. Vous pouvez ajouter un accesseur en utilisant la méthode `Class.getter`. Le premier argument est le nom de l'accesseur, et le second argument est la fonction de rappel pour calculer la valeur de la propriété.
 
-Getters are lazily evaluated properties added to a class. You can add a getter using the `Class.getter` method. The first argument is the getter name, and the second argument is the callback function to compute the property value.
-
-Getter callbacks cannot be async because [getters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) in JavaScript cannot be asynchronous.
+Les fonctions de rappel des accesseurs ne peuvent pas être asynchrones car les [accesseurs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) en JavaScript ne peuvent pas être asynchrones.
 
 ```ts
 import { Request } from '@adonisjs/core/http'
@@ -66,12 +65,12 @@ Request.getter('hasRequestId', function (this: Request) {
   return this.header('x-request-id')
 })
 
-// you can use the property as follows.
+// vous pouvez utiliser la propriété comme ceci
 if (ctx.request.hasRequestId) {
 }
 ```
 
-Getters can be a singleton, meaning the function to compute the getter value will be called once, and the return value will be cached for an instance of the class.
+Les accesseurs peuvent être des singletons, ce qui signifie que la fonction pour calculer la valeur de l'accesseur sera appelée une fois, et la valeur de retour sera mise en cache pour une instance de la classe.
 
 ```ts
 const isSingleton = true
@@ -81,11 +80,11 @@ Request.getter('hasRequestId', function (this: Request) {
 }, isSingleton)
 ```
 
-### Macroable classes
+### Classes extensibles
 
-Following is the list of classes that can be extended using Macros and getters.
+Voici la liste des classes qui peuvent être étendues en utilisant des macros et des accesseurs.
 
-| Class                                                                                          | Import path                 |
+| Classe                                                                                          | Chemin d'importation                 |
 |------------------------------------------------------------------------------------------------|-----------------------------|
 | [Application](https://github.com/adonisjs/application/blob/main/src/application.ts)            | `@adonisjs/core/app`        |
 | [Request](https://github.com/adonisjs/http-server/blob/main/src/request.ts)                    | `@adonisjs/core/http`       |
@@ -99,12 +98,13 @@ Following is the list of classes that can be extended using Macros and getters.
 | [MultipartFile](https://github.com/adonisjs/bodyparser/blob/main/src/multipart/file.ts)        | `@adonisjs/core/bodyparser` |
 
 
-## Extending modules
-Most of the AdonisJS modules provide extensible APIs to register custom implementations. Following is an aggregated list of the same.
+## Étendre les modules
 
-- [Creating Hash driver](../security/hashing.md#creating-a-custom-hash-driver)
-- [Creating Session driver](../basics/session.md#creating-a-custom-session-store)
-- [Creating Social auth driver](../authentication/social_authentication.md#creating-a-custom-social-driver)
-- [Extending REPL](../digging_deeper/repl.md#adding-custom-methods-to-repl)
-- [Creating i18n translations loader](../digging_deeper/i18n.md#creating-a-custom-translation-loader)
-- [Creating i18n translations formatter](../digging_deeper/i18n.md#creating-a-custom-translation-formatter)
+La plupart des modules AdonisJS fournissent des API extensibles pour enregistrer des implémentations personnalisées. En voici une liste récapitulative :
+
+- [Création d'un driver de hachage](../security/hashing.md#creating-a-custom-hash-driver)
+- [Création d'un driver de session](../basics/session.md#creating-a-custom-session-store)
+- [Création d'un driver d'authentification sociale](../authentication/social_authentication.md#creating-a-custom-social-driver)
+- [Extension du REPL](../digging_deeper/repl.md#adding-custom-methods-to-repl)
+- [Création d'un chargeur de traductions i18n](../digging_deeper/i18n.md#creating-a-custom-translation-loader)
+- [Création d'un formateur de traductions i18n](../digging_deeper/i18n.md#creating-a-custom-translation-formatter)
