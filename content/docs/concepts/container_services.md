@@ -29,6 +29,7 @@ const db = await app.container.make('lucid.db')
 Utiliser le conteneur pour résoudre des objets pré-configurés est excellent. Cependant, l'utilisation de la méthode `container.make` présente ses propres inconvénients.
 
 - Les éditeurs sont bons avec les importations automatiques. Si vous essayez d'utiliser une variable et que l'éditeur peut deviner le chemin d'importation de la variable, il écrira alors la déclaration d'importation pour vous. **Cependant, cela ne peut pas fonctionner avec les appels à `container.make`**.
+
 - Utiliser un mélange de déclarations d'importation et d'appels à `container.make` semble peu intuitif par rapport à une syntaxe unifiée pour importer/utiliser des modules.
 
 Pour surmonter ces inconvénients, nous enveloppons les appels à `container.make` dans un module JavaScript ordinaire, afin que vous puissiez les récupérer à l'aide de l'instruction `import`.

@@ -13,8 +13,11 @@ Voir aussi : [Cycle de vie de l'application](./application_lifecycle.md)
 L'environnement fait référence à l'environnement d'exécution de l'application. L'application est toujours démarrée dans l'un des environnements connus suivants.
 
 - L'environnement `web` fait référence au processus démarré pour le serveur HTTP.
+
 - L'environnement `console` fait référence aux commandes Ace, à l'exception de la commande REPL.
+
 - L'environnement `repl` fait référence au processus démarré à l'aide de la commande `node ace repl`.
+
 - Enfin, l'environnement de `test` fait référence au processus démarré à l'aide de la commande `node ace test`.
 
 Vous pouvez accéder à l'environnement de l'application en utilisant la méthode `getEnvironment`.
@@ -82,9 +85,13 @@ L'état fait référence à l'état actuel de l'application. Les fonctionnalité
 L'application est toujours dans l'un des états connus suivants.
 
 - `created` : C'est l'état par défaut de l'application.
+
 - `initiated` : Dans cet état, nous analysons/validons les variables d'environnement et traitons le fichier `adonisrc.ts`.
+
 - `booted` : Les fournisseurs de services de l'application sont enregistrés et démarrés dans cet état.
+
 - `ready` : L'état ready varie selon les différents environnements. Par exemple, dans l'environnement `web`, l'état ready signifie que l'application est prête à accepter de nouvelles requêtes HTTP.
+
 - `terminated` : L'application a été arrêtée et le processus va bientôt se terminer. L'application n'acceptera pas de nouvelles requêtes HTTP dans l'environnement `web`.
 
 ```ts

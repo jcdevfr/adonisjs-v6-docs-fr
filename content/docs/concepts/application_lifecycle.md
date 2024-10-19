@@ -41,6 +41,7 @@ Vous ne pouvez utiliser les liaisons du conteneur et les services qu'une fois l'
 La phase de lancement varie entre tous les environnements. De plus, le flux d'exécution est divisé en sous-phases suivantes :
 
 - La phase de `pré-lancement` fait référence aux actions effectuées avant le lancement de l'application.
+
 - La phase de `post-lancement` fait référence aux actions effectuées après le lancement de l'application. Dans le cas d'un serveur HTTP, les actions seront exécutées après que le serveur HTTP soit prêt à accepter de nouvelles connexions.
 
 ![](./start_phase_flow_chart.png)
@@ -153,10 +154,15 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
 ```
 
 - `initiating` : Les actions du hook sont appelées avant que l'application ne passe à l'état initiated. Le fichier `adonisrc.ts` est analysé après l'exécution des hooks `initiating`.
+
 - `booting` : Les actions du hook sont appelées avant le démarrage de l'application. Les fichiers de configuration sont importés après l'exécution des hooks `booting`.
+
 - `booted` : Les actions du hook sont invoquées après que tous les fournisseurs de services aient été enregistrés et démarrés.
+
 - `starting` : Les actions du hook sont invoquées avant l'importation des fichiers à précharger.
+
 - `ready` : Les actions du hook sont invoquées après que l'application soit prête.
+
 - `terminating` : Les actions du hook sont invoquées une fois que le processus d'arrêt en douceur commence. Par exemple, ce hook peut fermer les connexions à la base de données ou terminer les streams ouverts.
 
 ### Utilisation des fournisseurs de services
@@ -187,8 +193,13 @@ export default class AppProvider {
   }
 }
 ```
+
 - `register` : La méthode register enregistre les liaisons dans le conteneur. Cette méthode est synchrone par conception.
+
 - `boot` : La méthode boot est utilisée pour démarrer ou initialiser les liaisons que vous avez enregistrées dans le conteneur.
+
 - `start` : La méthode start s'exécute juste avant la méthode `ready`. Elle vous permet d'effectuer des actions dont les actions du hook `ready` pourraient avoir besoin.
+
 - `ready` : La méthode ready s'exécute après que l'application soit considérée comme prête.
+
 - `shutdown` : La méthode shutdown est invoquée lorsque l'application commence l'arrêt en douceur. Vous pouvez utiliser cette méthode pour fermer les connexions à la base de données ou terminer les streams ouverts.
