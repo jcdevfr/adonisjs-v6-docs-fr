@@ -109,7 +109,7 @@
   },
   {
     "permalink": "concepts/extending-adonisjs",
-    "title": "Extension du framework",
+    "title": "Étendre le framework",
     "contentPath": "./concepts/extending_the_framework.md",
     "category": "Concepts"
   },
