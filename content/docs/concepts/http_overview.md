@@ -1,174 +1,174 @@
 ---
-summary: Learn how AdonisJS boots the HTTP server, handles incoming requests, and the modules available at the HTTP layer.
+summary: Apprenez comment AdonisJS démarre le serveur HTTP, gère les requêtes entrantes et les modules disponibles au niveau de la couche HTTP.
 ---
 
-# HTTP overview
+# Vue d'ensemble HTTP
 
-AdonisJS is primarily a web framework to create applications that respond to HTTP requests. In this guide, we will learn how AdonisJS boots the HTTP server, handles the incoming requests, and the modules available at the HTTP layer.
+AdonisJS est principalement un framework web pour créer des applications qui répondent aux requêtes HTTP. Dans ce guide, nous allons apprendre comment AdonisJS démarre le serveur HTTP, gère les requêtes entrantes, et les modules disponibles au niveau de la couche HTTP.
 
-## The HTTP layer
-The HTTP layer inside an AdonisJS application consists of the following modules. It is worth mentioning that the AdonisJS HTTP layer is built from scratch and does not use any microframework under the hood.
+## La couche HTTP
+
+La couche HTTP dans une application AdonisJS se compose des modules suivants. Il est important de mentionner que la couche HTTP d'AdonisJS est construite à partir de zéro et n'utilise aucun microframework sous le capot.
 
 
 <dl>
 
 <dt>
 
-[Router](../basics/routing.md)
+[Routeur](../basics/routing.md)
 
 </dt>
 
 <dd>
 
-The [router module](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) is responsible for defining the endpoints of your application, which are known as routes. A route should define a handler responsible for handling the request. The handler can be a closure or reference to a controller.
+Le [module router](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) est responsable de la définition des points d'entrée de votre application, connus sous le nom de routes. Une route doit définir un gestionnaire responsable du traitement de la requête. Le gestionnaire peut être une closure ou une référence à un contrôleur.
 
 </dd>
 
 <dt>
 
-[Controllers](../basics/controllers.md)
+[Contrôleurs](../basics/controllers.md)
 
 </dt>
 
 <dd>
 
-Controllers are JavaScript classes that you bind to a route to handle the HTTP requests. Controllers act as an organization layer and help you divide the business logic of your application inside different files/classes.
+Les contrôleurs sont des classes JavaScript que vous liez à une route pour gérer les requêtes HTTP. Les contrôleurs agissent comme une couche d'organisation et vous aident à diviser la logique métier de votre application dans différents fichiers/classes.
 
 </dd>
 
 <dt>
 
-[HttpContext](./http_context.md)
+[Contexte HTTP](./http_context.md)
 
 </dt>
 
 
 <dd>
 
-AdonisJS creates an instance of the [HttpContext](https://github.com/adonisjs/http-server/blob/main/src/http_context/main.ts) class for every incoming HTTP request. The HttpContext (aka `ctx`) carries the information like the request body, headers, authenticated user, etc, for a given request.
+AdonisJS crée une instance de la classe [HttpContext](https://github.com/adonisjs/http-server/blob/main/src/http_context/main.ts) pour chaque requête HTTP entrante. Le contexte HTTP (aussi appelé `ctx`) contient des informations comme le corps de la requête, les en-têtes, l'utilisateur authentifié, etc., pour une requête donnée.
 
 </dd>
 
 <dt>
 
-[Middleware](../basics/middleware.md)
+[Middlewares](../basics/middleware.md)
 
 </dt>
 
 <dd>
 
-The middleware pipeline in AdonisJS is an implementation of [Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility) design pattern. You can use middleware to intercept HTTP requests and respond to them before they reach the route handler.
+Le pipeline de middlewares dans AdonisJS est une implémentation du modèle de conception [Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility). Vous pouvez utiliser les middlewares pour intercepter les requêtes HTTP et y répondre avant qu'elles n'atteignent le gestionnaire de route.
 
 </dd>
 
 <dt>
 
-[Global Exception handler](../basics/exception_handling.md)
+[Gestionnaire d'exceptions global](../basics/exception_handling.md)
 
 </dt>
 
 <dd>
 
-The global exception handler handles exceptions raised during an HTTP request at a central location. You can use the global exception handler to convert exceptions to an HTTP response or report them to an external logging service.
+Le gestionnaire d'exceptions global gère les exceptions levées pendant une requête HTTP à un emplacement central. Vous pouvez utiliser le gestionnaire d'exceptions global pour convertir les exceptions en une réponse HTTP ou les signaler à un service de journalisation externe.
 
 </dd>
 
 <dt>
 
-Server
+Serveur
 
 </dt>
 
 <dd>
 
-The [server module](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts) wires up the router, middleware, the global exception handler and exports [a `handle` function](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts#L330) you can bind to the Node.js HTTP server to handle requests.
+Le [module server](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts) relie le routeur, les middlewares, le gestionnaire d'exceptions global et exporte [une fonction `handle`](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts#L330) que vous pouvez lier au serveur HTTP de Node.js pour gérer les requêtes.
 
 </dd>
 
 </dl>
 
-## How AdonisJS boots the HTTP server
-The HTTP server is booted once you call [the `boot` method](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts#L252) on the Server class. Under the hood, this method performs the following actions.
+## Comment AdonisJS démarre le serveur HTTP
 
-- Create the middleware pipeline
-- Compile routes
-- Import and instantiate the global exception handler
+Le serveur HTTP est démarré une fois que vous appelez [la méthode `boot`](https://github.com/adonisjs/http-server/blob/main/src/server/main.ts#L252) sur la classe Server. En interne, cette méthode effectue les actions suivantes :
 
-In a typical AdonisJS application, the `boot` method is called by the [Ignitor](https://github.com/adonisjs/core/blob/main/src/ignitor/http.ts) module within the `bin/server.ts` file.
+- Crée le pipeline de middlewares.
+- Compile les routes.
+- Importe et instancie le gestionnaire d'exceptions global.
 
-Also, it is essential to define the routes, middleware, and the global exception handler before the `boot` method is called, and AdonisJS achieves that using the `start/routes.ts` and `start/kernel.ts` [preload files](./adonisrc_file.md#preloads).
+Dans une application AdonisJS typique, la méthode `boot` est appelée par le module [Ignitor](https://github.com/adonisjs/core/blob/main/src/ignitor/http.ts) dans le fichier `bin/server.ts`.
+
+Il est également essentiel de définir les routes, les middlewares et le gestionnaire d'exceptions global avant que la méthode `boot` ne soit appelée, et AdonisJS y parvient en utilisant les [fichiers à précharger](./adonisrc_file.md#preloads) `start/routes.ts` et `start/kernel.ts`.
 
 ![](./server_boot_lifecycle.png)
 
-## HTTP request lifecycle
-Now that we have an HTTP server listening for incoming requests. Let's see how AdonisJS handles a given HTTP request.
+## Cycle de vie d'une requête HTTP
+
+Maintenant que nous avons un serveur HTTP à l'écoute des requêtes entrantes, voyons comment AdonisJS gère une requête HTTP donnée.
 
 :::note
-
-**See also:**\
-[Middleware execution flow](../basics/middleware.md#middleware-execution-flow)\
-[Middleware and exception handling](../basics/middleware.md#middleware-and-exception-handling)
-
+**Voir aussi :**\
+[Flux d'exécution du middleware](../basics/middleware.md#middleware-execution-flow)\
+[Middleware et gestion des exceptions](../basics/middleware.md#middleware-and-exception-handling)
 :::
 
 
 <dl>
 
-<dt> Creating the HttpContext </dt>
+<dt> Création du contexte HTTP </dt>
 
 
 <dd>
 
-As the first step, the server module creates an instance of the [HttpContext](./http_context.md) class and passes it as a reference to the middleware, route handlers, and the global exception handler.
+Dans un premier temps, le module server crée une instance de la classe [HttpContext](./http_context.md) et la passe en référence aux middlewares, aux gestionnaires de route et au gestionnaire d'exceptions global.
 
-If you have enabled the [AsyncLocalStorage](./async_local_storage.md#usage), then the same instance is 
-shared as the local storage state.
+Si vous avez activé l'[AsyncLocalStorage](./async_local_storage.md#usage), alors la même instance est partagée comme état de stockage local.
 
 </dd>
 
-<dt> Executing server middleware stack </dt>
+<dt> Exécution de la pile de middlewares du serveur </dt>
 
 <dd>
 
-Next, the middleware from the [server middleware stack](../basics/middleware.md#server-middleware-stack) are executed. These middleware can intercept and respond to the request before it reaches the route handler.
+Ensuite, les middlewares de la [pile des middlewares du serveur](../basics/middleware.md#server-middleware-stack) sont exécutés. Ces middlewares peuvent intercepter et répondre à la requête avant qu'elle n'atteigne le gestionnaire de route.
 
-Also, every HTTP request goes through the server middleware stack, even if you have not defined any router for the given endpoint. This allows server middleware to add functionality to an app without relying on the routing system.
+De plus, chaque requête HTTP passe par la pile des middlewares du serveur, même si vous n'avez pas défini de route pour le point d'entrée donné. Cela permet aux middlewares du serveur d'ajouter des fonctionnalités à une application sans dépendre du système de routage.
 
 </dd>
 
-<dt> Finding the matching route </dt>
+<dt> Recherche de la route correspondante </dt>
 
 <dd>
 
-If a server middleware does not end the request, we look for a matching route for the `req.url` property. The request is aborted with a `404 - Not found` exception when no matching route exists. Otherwise, we continue with the request.
+Si un middleware du serveur ne termine pas la requête, nous cherchons une route correspondante pour la propriété `req.url`. La requête est interrompue avec une exception `404 - Not found` lorsqu'aucune route correspondante n'existe. Sinon, nous continuons avec la requête.
 
 </dd>
 
-<dt> Executing the route middleware </dt>
+<dt> Exécution des middlewares de route </dt>
 
 <dd>
 
-Once there is a matching route, we execute the [router global middleware](../basics/middleware.md#router-middleware-stack) and the [named middleware stack](../basics/middleware.md#named-middleware-collection). Again, middleware can intercept the request before it reaches the route handler.
+Une fois qu'il y a une route correspondante, nous exécutons les [middlewares globaux du routeur](../basics/middleware.md#router-middleware-stack) et la [pile de middlewares nommés](../basics/middleware.md#named-middleware-collection). Encore une fois, les middlewares peuvent intercepter la requête avant qu'elle n'atteigne le gestionnaire de route.
 
 </dd>
 
-<dt> Executing the route handler </dt>
+<dt> Exécution du gestionnaire de route </dt>
 
 <dd>
 
-As the final step, the request reaches the route handler and returns to the client with a response.
+Comme étape finale, la requête atteint le gestionnaire de route et retourne au client avec une réponse.
 
-Suppose an exception is raised during any step in the process. In that case, the request will be handed over to the global exception handler, who is responsible for converting the exception to a response.
+Si une exception est levée pendant n'importe quelle étape du processus, la requête sera transmise au gestionnaire d'exceptions global, qui est responsable de la conversion de l'exception en une réponse.
 
 </dd>
 
-<dt> Serializing response </dt>
+<dt> Sérialisation de la réponse </dt>
 
 <dd>
 
-Once you define the response body using the `response.send` method or by returning a value from the route handler, we begin the response serialization process and set the appropriate headers.
+Une fois que vous définissez le corps de la réponse en utilisant la méthode `response.send` ou en retournant une valeur depuis le gestionnaire de route, nous commençons le processus de sérialisation de la réponse et définissons les en-têtes appropriés.
 
-Learn more about [response body serialization](../basics/response.md#response-body-serialization)
+En savoir plus sur la [sérialisation du corps de la réponse](../basics/response.md#response-body-serialization)
 
 </dd>
 
