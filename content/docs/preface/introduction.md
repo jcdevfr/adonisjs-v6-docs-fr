@@ -20,7 +20,7 @@ AdonisJS se concentre sur le backend et vous laisse choisir la stack frontend de
 
 Si vous aimez garder les choses simples, associez AdonisJS à un [moteur de template traditionnel](../views-and-templates/introduction.md) pour générer du HTML statique côté serveur, créez une API JSON pour votre application frontend Vue/React ou utilisez [Inertia](../views-and-templates/inertia.md) pour faire fonctionner votre framework frontend préféré en parfaite harmonie.
 
-AdonisJS vise à vous fournir tous les outils nécessaires pour créer une application backend robuste from scratch. Qu'il s'agisse d'envoyer des emails, de valider les entrées utilisateur, d'effectuer des opérations CRUD ou d'authentifier des utilisateurs. Nous nous occupons de tout.
+AdonisJS vise à vous fournir tous les outils nécessaires pour créer une application backend robuste en partant de zéro. Qu'il s'agisse d'envoyer des emails, de valider les entrées utilisateur, d'effectuer des opérations CRUD ou d'authentifier des utilisateurs. Nous nous occupons de tout.
 
 ### Moderne et type-safe
 
@@ -87,7 +87,7 @@ export default class PostsController {
 
 La documentation d'AdonisJS est rédigée comme un guide de référence, couvrant l'utilisation et l'API de plusieurs packages et modules maintenus par l'équipe principale.
 
-**Le guide n'enseigne pas comment construire une application from scratch**. Si vous cherchez un tutoriel, nous vous recommandons de commencer votre voyage avec [Adocasts](https://adocasts.com/). Tom (le créateur d'Adocasts) a créé des screencasts de haute qualité, vous aidant à faire vos premiers pas avec AdonisJS.
+**Le guide n'enseigne pas comment construire une application en partant de zéro**. Si vous cherchez un tutoriel, nous vous recommandons de commencer votre voyage avec [Adocasts](https://adocasts.com/). Tom (le créateur d'Adocasts) a créé des screencasts de haute qualité, vous aidant à faire vos premiers pas avec AdonisJS.
 
 Cela étant dit, la documentation couvre en détail l'utilisation des modules disponibles et le fonctionnement interne du framework.
 
