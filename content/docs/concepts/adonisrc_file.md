@@ -250,7 +250,7 @@ Voir aussi : [Fournisseurs de services](./service_providers.md)
 
 ## assetsBundler
 
-Les commandes `serve` et `build` tentent de détecter les ressources utilisées par votre application pour compiler les ressources front-end.
+Les commandes `serve` et `build` tentent de détecter les ressources utilisées par votre application pour compiler les ressources frontend.
 
 La détection est effectuée pour [Vite](https://vitejs.dev) en recherchant le fichier `vite.config.js` et pour [Webpack encore](https://github.com/symfony/webpack-encore) en recherchant le fichier `webpack.config.js`.
 

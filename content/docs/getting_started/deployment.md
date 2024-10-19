@@ -198,7 +198,7 @@ Servir efficacement des ressources statiques est essentiel pour les performances
 
 La meilleure approche consiste à utiliser un CDN (Content Delivery Network) pour délivrer les ressources statiques de votre application AdonisJS.
 
-Les ressources front-end compilées à l'aide de [Vite](../basics/vite.md) sont dotées d'une empreinte unique (fingerprinted) par défaut, ce qui signifie que les noms de fichiers sont hachés en fonction de leur contenu. Cela vous permet de mettre en cache les ressources indéfiniment et de les servir depuis un CDN.
+Les ressources frontend compilées à l'aide de [Vite](../basics/vite.md) sont dotées d'une empreinte unique (fingerprinted) par défaut, ce qui signifie que les noms de fichiers sont hachés en fonction de leur contenu. Cela vous permet de mettre en cache les ressources indéfiniment et de les servir depuis un CDN.
 
 Selon le service CDN que vous utilisez et votre technique de déploiement, vous devrez peut-être ajouter une étape à votre processus de déploiement pour déplacer les fichiers statiques vers le serveur CDN. Pour faire simple, voici comment cela devrait fonctionner :
 
@@ -210,7 +210,7 @@ Selon le service CDN que vous utilisez et votre technique de déploiement, vous 
 
 ### Utilisation de Nginx pour délivrer des ressources statiques
 
-Une autre option consiste à déléguer la tâche de servir les ressources à Nginx. Si vous utilisez Vite pour compiler les ressources front-end, vous devez mettre en cache de manière agressive tous les fichiers statiques car ils possèdent une empreinte unique.
+Une autre option consiste à déléguer la tâche de servir les ressources à Nginx. Si vous utilisez Vite pour compiler les ressources frontend, vous devez mettre en cache de manière agressive tous les fichiers statiques car ils possèdent une empreinte unique.
 
 Ajoutez le bloc suivant à votre fichier de configuration Nginx. **Assurez-vous de remplacer les valeurs entre crochets angulaires `<>`**.
 

@@ -8,7 +8,7 @@ Les hooks de l'assembleur sont un moyen d'exécuter du code à des moments spéc
 
 Ces hooks peuvent être utiles pour des tâches telles que la génération de fichiers, la compilation de code ou l'injection d'étapes de construction personnalisées.
 
-Par exemple, le package `@adonisjs/vite` utilise le hook `onBuildStarting` pour injecter une étape où les ressources front-end sont construits. Ainsi, lorsque vous exécutez `node ace build`, le package `@adonisjs/vite` construira vos ressources front-end avant le reste du processus de construction. C'est un bon exemple de la façon dont les hooks peuvent être utilisés pour personnaliser le processus de construction.
+Par exemple, le package `@adonisjs/vite` utilise le hook `onBuildStarting` pour injecter une étape où les ressources frontend sont construits. Ainsi, lorsque vous exécutez `node ace build`, le package `@adonisjs/vite` construira vos ressources frontend avant le reste du processus de construction. C'est un bon exemple de la façon dont les hooks peuvent être utilisés pour personnaliser le processus de construction.
 
 ## Ajouter un hook
 

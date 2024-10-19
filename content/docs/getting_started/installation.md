@@ -69,7 +69,7 @@ Les kits de démarrage officiels utilisent les modules ES et TypeScript. Cette c
 
 ### Kit de démarrage Web
 
-Le kit de démarrage Web est conçu pour créer des applications web traditionnelles avec rendu côté serveur. Ne vous laissez pas décourager par le mot **"traditionnel"**. Nous recommandons ce kit de démarrage si vous créez une application web avec une interactivité front-end limitée.
+Le kit de démarrage Web est conçu pour créer des applications web traditionnelles avec rendu côté serveur. Ne vous laissez pas décourager par le mot **"traditionnel"**. Nous recommandons ce kit de démarrage si vous créez une application web avec une interactivité frontend limitée.
 
 La simplicité du rendu HTML sur le serveur avec [Edge.js](https://edgejs.dev) augmentera votre productivité car vous n'aurez pas à gérer des systèmes de construction complexes pour rendre du HTML.
 
@@ -93,7 +93,7 @@ Le kit de démarrage web est composé des packages suivants :
 </thead>
 <tbody><tr>
 <td><code>@adonisjs/core</code></td>
-<td>Le noyau du framework contenant les fonctionnalités de base dont vous pourriez avoir besoin lors de la création d'applications back-end.</td>
+<td>Le noyau du framework contenant les fonctionnalités de base dont vous pourriez avoir besoin lors de la création d'applications backend.</td>
 </tr>
 <tr>
 <td><code>edge.js</code></td>
@@ -122,7 +122,7 @@ Le kit de démarrage web est composé des packages suivants :
 </tr>
 <tr>
 <td><code>vite</code></td>
-<td><a href="https://vitejs.dev/">Vite</a> est utilisé pour compiler les ressources front-end.
+<td><a href="https://vitejs.dev/">Vite</a> est utilisé pour compiler les ressources frontend.
 </td>
 </tr>
 </tbody></table>
@@ -131,7 +131,7 @@ Le kit de démarrage web est composé des packages suivants :
 
 ### Kit de démarrage API
 
-Le kit de démarrage API est conçu pour créer des API JSON. C'est une version allégée du kit de démarrage `web`. Si vous prévoyez de construire votre application front-end avec React ou Vue, vous pouvez créer votre back-end AdonisJS en utilisant le kit de démarrage API.
+Le kit de démarrage API est conçu pour créer des API JSON. C'est une version allégée du kit de démarrage `web`. Si vous prévoyez de construire votre application frontend avec React ou Vue, vous pouvez créer votre backend AdonisJS en utilisant le kit de démarrage API.
 
 ```sh
 npm init adonisjs@latest -- -K=api
@@ -172,9 +172,9 @@ npm init adonisjs@latest -- -K=slim --db=mysql
 
 ### Kit de démarrage Inertia
 
-[Inertia](https://inertiajs.com/) est une façon de construire des applications monopages pilotées par le serveur. Vous pouvez utiliser votre framework front-end préféré (React, Vue, Solid, Svelte) pour construire le front-end de votre application.
+[Inertia](https://inertiajs.com/) est une façon de construire des applications monopages pilotées par le serveur. Vous pouvez utiliser votre framework frontend préféré (React, Vue, Solid, Svelte) pour construire le frontend de votre application.
 
-Vous pouvez utiliser le flag `--adapter` pour choisir le framework front-end que vous voulez utiliser. Les options disponibles sont `react`, `vue`, `solid` et `svelte`.
+Vous pouvez utiliser le flag `--adapter` pour choisir le framework frontend que vous voulez utiliser. Les options disponibles sont `react`, `vue`, `solid` et `svelte`.
 
 Vous pouvez également utiliser les flags `--ssr` et `--no-ssr` pour activer ou désactiver le rendu côté serveur.
 
@@ -236,7 +236,7 @@ Les applications AdonisJS étant écrites en TypeScript, elles doivent être com
 
 Vous pouvez créer la sortie JavaScript en utilisant la commande `node ace build`. La sortie JavaScript est écrite dans le répertoire `build`.
 
-Lorsque Vite est configuré, cette commande compile également les ressources front-end en utilisant Vite et écrit la sortie dans le répertoire `build/public`.
+Lorsque Vite est configuré, cette commande compile également les ressources frontend en utilisant Vite et écrit la sortie dans le répertoire `build/public`.
 
 Voir aussi : [Processus de construction TypeScript](../concepts/typescript_build_process.md).
 
