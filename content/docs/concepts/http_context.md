@@ -1,28 +1,28 @@
 ---
-summary: Learn about the HTTP context in AdonisJS and how to access it from route handlers, middleware, and exception handlers.
+summary: Découvrez le contexte HTTP dans AdonisJS et comment y accéder à partir des gestionnaires de routes, des middlewares et des gestionnaires d'exceptions.
 ---
 
-# HTTP context
+# Contexte HTTP
 
-A new instance of [HTTP Context class](https://github.com/adonisjs/http-server/blob/main/src/http_context/main.ts) is generated for every HTTP request and passed along to the route handler, middleware, and exception handler.
+Une nouvelle instance de la [classe HttpContext](https://github.com/adonisjs/http-server/blob/main/src/http_context/main.ts) est générée pour chaque requête HTTP et transmise au gestionnaire de route, au middleware et au gestionnaire d'exceptions.
 
-HTTP Context holds all the information you may need related to an HTTP request. For example:
+Le contexte HTTP contient toutes les informations dont vous pouvez avoir besoin concernant une requête HTTP. Par exemple :
 
-- You can access the request body, headers, and query params using the [ctx.request](../basics/request.md) property.
-- You can respond to the HTTP request using the [ctx.response](../basics/response.md) property.
-- Access the logged-in user using the [ctx.auth](../authentication/introduction.md) property.
-- Authorize user actions using the [ctx.bouncer](../security/authorization.md) property.
-- And so on.
+- Vous pouvez accéder au corps de la requête, aux en-têtes et aux paramètres de requête en utilisant la propriété [ctx.request](../basics/request.md).
+- Vous pouvez répondre à la requête HTTP en utilisant la propriété [ctx.response](../basics/response.md).
+- Accédez à l'utilisateur connecté en utilisant la propriété [ctx.auth](../authentication/introduction.md).
+- Autorisez les actions de l'utilisateur en utilisant la propriété [ctx.bouncer](../security/authorization.md).
+- Et ainsi de suite.
 
-In a nutshell, the context is a request-specific store holding all the information for the ongoing request.
+En résumé, le contexte est un stockage spécifique à la requête contenant toutes les informations pour la requête en cours.
 
-## Getting access to the HTTP context
+## Accéder au contexte HTTP
 
-The HTTP context is passed by reference to the route handler, middleware, and exception handler, and you can access it as follows.
+Le contexte HTTP est passé par référence au gestionnaire de route, au middleware et au gestionnaire d'exceptions, et vous pouvez y accéder comme ceci.
 
-### Route handler
+### Gestionnaire de route
 
-The [router handler](../basics/routing.md) receives the HTTP context as the first parameter.
+Le [gestionnaire de route](../basics/routing.md) reçoit le contexte HTTP comme premier paramètre.
 
 ```ts
 import router from '@adonisjs/core/services/router'
@@ -33,7 +33,7 @@ router.get('/', (ctx) => {
 ```
 
 ```ts
-// title: Destructure properties
+// title: Décomposer les propriétés
 import router from '@adonisjs/core/services/router'
 
 router.get('/', ({ request, response }) => {
@@ -47,9 +47,9 @@ router.get('/', ({ request, response }) => {
 })
 ```
 
-### Controller method
+### Méthode de contrôleur
 
-The [controller method](../basics/controllers.md) (similar to the router handler) receives the HTTP context as the first parameter.
+La [méthode de contrôleur](../basics/controllers.md) (similaire au gestionnaire de route) reçoit le contexte HTTP comme premier paramètre.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -60,9 +60,9 @@ export default class HomeController {
 }
 ```
 
-### Middleware class
+### Classe de middleware
 
-The `handle` method of the [middleware class](../basics/middleware.md) receives HTTP context as the first parameter. 
+La méthode `handle` d'une [classe de middleware](../basics/middleware.md) reçoit le contexte HTTP comme premier paramètre.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -73,9 +73,9 @@ export default class AuthMiddleware {
 }
 ```
 
-### Exception handler class
+### Classe de gestionnaire d'exceptions
 
-The `handle` and the `report` methods of the [global exception handler](../basics/exception_handling.md) class receive HTTP context as the second parameter. The first parameter is the `error` property.
+Les méthodes `handle` et `report` d'une classe de [gestionnaire d'exceptions global](../basics/exception_handling.md) reçoivent le contexte HTTP comme deuxième paramètre. Le premier paramètre est la propriété `error`.
 
 ```ts
 import {
@@ -94,18 +94,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-## Injecting HTTP Context using Dependency Injection
+## Injecter le contexte HTTP en utilisant l'injection de dépendances
 
-If you use Dependency injection throughout your application, you can inject the HTTP context to a class or a method by type hinting the `HttpContext` class.
-
+Si vous utilisez l'injection de dépendances dans votre application, vous pouvez injecter le contexte HTTP dans une classe ou une méthode en utilisant le type `HttpContext`.
 
 :::warning
-
-Ensure the `#middleware/container_bindings_middleware` middleware is registered inside the `kernel/start.ts` file. This middleware is required to resolve request-specific values (i.e., the HttpContext class) from the container.
-
+Assurez-vous que le middleware `#middleware/container_bindings_middleware` est enregistré dans le fichier `kernel/start.ts`. Ce middleware est nécessaire pour résoudre les valeurs spécifiques à la requête (c'est-à-dire la classe HttpContext) à partir du conteneur.
 :::
 
-See also: [IoC container guide](../concepts/dependency_injection.md)
+Voir aussi : [Guide du conteneur IoC](../concepts/dependency_injection.md)
 
 ```ts
 // title: app/services/user_service.ts
@@ -117,12 +114,12 @@ export default class UserService {
   constructor(protected ctx: HttpContext) {}
   
   all() {
-    // method implementation
+    // implémentation de la méthode
   }
 }
 ```
 
-For automatic dependency resolution to work, you must inject the `UserService` inside your controller. Remember, the first argument to a controller method will always be the context, and the rest will be injected using the IoC container.
+Pour que la résolution automatique des dépendances fonctionne, vous devez injecter le `UserService` dans votre contrôleur. N'oubliez pas que le premier argument d'une méthode de contrôleur sera toujours le contexte, et le reste sera injecté en utilisant le conteneur IoC.
 
 ```ts
 import { inject } from '@adonisjs/core'
@@ -137,17 +134,17 @@ export default class UsersController {
 }
 ```
 
-That's all! The `UserService` will now automatically receive an instance of the ongoing HTTP request. You can repeat the same process for nested dependencies as well.
+C'est tout ! Le `UserService` recevra maintenant automatiquement une instance de la requête HTTP en cours. Vous pouvez répéter le même processus pour les dépendances imbriquées également.
 
-## Accessing HTTP context from anywhere inside your application
+## Accéder au contexte HTTP depuis n'importe où dans votre application
 
-Dependency injection is one way to accept the HTTP context as a class constructor or a method dependency and then rely on the container to resolve it for you.
+L'injection de dépendances est une façon d'accepter le contexte HTTP comme dépendance du constructeur de classe ou de méthode, puis de compter sur le conteneur pour le résoudre pour vous.
 
-However, it is not a hard requirement to restructure your application and use Dependency injection everywhere. You can also access the HTTP context from anywhere inside your application using the [Async local storage](https://nodejs.org/dist/latest-v21.x/docs/api/async_context.html#class-asynclocalstorage) provided by Node.js. 
+Cependant, il n'est pas obligatoire de restructurer votre application et d'utiliser l'injection de dépendances partout. Vous pouvez également accéder au contexte HTTP depuis n'importe où dans votre application en utilisant le [stockage local asynchrone](https://nodejs.org/dist/latest-v21.x/docs/api/async_context.html#class-asynclocalstorage) fourni par Node.js.
 
-We have a [dedicated guide](./async_local_storage.md) on how Async local storage works and how AdonisJS uses it to provide global access to the HTTP context.
+Nous avons un [guide dédié](./async_local_storage.md) sur le fonctionnement du stockage local asynchrone et comment AdonisJS l'utilise pour fournir un accès global au contexte HTTP.
 
-In the following example, the `UserService` class uses the `HttpContext.getOrFail` method to get the HTTP context instance for the ongoing request.
+Dans l'exemple suivant, la classe `UserService` utilise la méthode `HttpContext.getOrFail` pour obtenir l'instance du contexte HTTP pour la requête en cours.
 
 ```ts
 // title: app/services/user_service.ts
@@ -161,7 +158,7 @@ export default class UserService {
 }
 ```
 
-The following code block shows the `UserService` class usage inside the `UsersController`.
+Le bloc de code suivant montre l'utilisation de la classe `UserService` dans le `UsersController`.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -175,9 +172,9 @@ export default class UsersController {
 }
 ```
 
-## HTTP Context properties
+## Propriétés du contexte HTTP
 
-Following is the list of properties you can access through the HTTP context. As you install new packages, they may add additional properties to the context.
+Voici la liste des propriétés auxquelles vous pouvez accéder via le contexte HTTP. Au fur et à mesure que vous installez de nouveaux packages, ils peuvent ajouter des propriétés supplémentaires au contexte.
 
 <dl>
 <dt>
@@ -188,7 +185,7 @@ ctx.request
 
 <dd>
 
-Reference to an instance of the [HTTP Request class](../basics/request.md).
+Référence à une instance de la [classe Request](../basics/request.md).
 
 </dd>
 
@@ -200,7 +197,7 @@ ctx.response
 
 <dd>
 
-Reference to an instance of the [HTTP Response class](../basics/response.md).
+Référence à une instance de la [classe Response](../basics/response.md).
 
 </dd>
 
@@ -212,7 +209,7 @@ ctx.logger
 
 <dd>
 
-Reference to an instance of [logger](../digging_deeper/logger.md) created for a given HTTP request.
+Référence à une instance du [logger](../digging_deeper/logger.md) créé pour une requête HTTP spécifique.
 
 </dd>
 
@@ -224,7 +221,7 @@ ctx.route
 
 <dd>
 
-The matched route for the current HTTP request. The `route` property is an object of type [StoreRouteNode](https://github.com/adonisjs/http-server/blob/main/src/types/route.ts#L69)
+La route correspondante pour la requête HTTP actuelle. La propriété `route` est un objet de type [StoreRouteNode](https://github.com/adonisjs/http-server/blob/main/src/types/route.ts#L69).
 
 </dd>
 
@@ -236,7 +233,7 @@ ctx.params
 
 <dd>
 
-An object of route params
+Un objet de paramètres d'une route.
 
 </dd>
 
@@ -248,7 +245,7 @@ ctx.subdomains
 
 <dd>
 
-An object of route subdomains. Only exists when the route is part of a dynamic subdomain
+Un objet de sous-domaines d'une route. N'existe que lorsque la route fait partie d'un sous-domaine dynamique.
 
 </dd>
 
@@ -260,7 +257,7 @@ ctx.session
 
 <dd>
 
-Reference to an instance of [Session](../basics/session.md) created for the current HTTP request.
+Référence à une instance de [Session](../basics/session.md) créée pour la requête HTTP actuelle.
 
 </dd>
 
@@ -272,7 +269,7 @@ ctx.auth
 
 <dd>
 
-Reference to an instance of the [Authenticator class](https://github.com/adonisjs/auth/blob/main/src/authenticator.ts). Learn more about [authentication](../authentication/introduction.md).
+Référence à une instance de la [classe Authenticator](https://github.com/adonisjs/auth/blob/main/src/authenticator.ts). En savoir plus sur l'[authentification](../authentication/introduction.md).
 
 </dd>
 
@@ -284,7 +281,7 @@ ctx.view
 
 <dd>
 
-Reference to an instance of Edge renderer. Learn more about Edge in [View and templates guide](../views-and-templates/introduction.md#using-edge)
+Référence à une instance du moteur de rendu Edge. En savoir plus sur Edge dans le [guide Vues et templates](../views-and-templates/introduction.md#using-edge).
 
 </dd>
 
@@ -296,7 +293,7 @@ ctx\.ally
 
 <dd>
 
-Reference to an instance of the [Ally Manager class](https://github.com/adonisjs/ally/blob/main/src/ally_manager.ts) to implement social login in your apps. Learn more about [Ally](../authentication/social_authentication.md)
+Référence à une instance de la [classe AllyManager](https://github.com/adonisjs/ally/blob/main/src/ally_manager.ts) pour implémenter la connexion sociale dans vos applications. En savoir plus sur [Ally](../authentication/social_authentication.md).
 
 </dd>
 
@@ -308,7 +305,7 @@ ctx.bouncer
 
 <dd>
 
-Reference to an instance of the [Bouncer class](https://github.com/adonisjs/bouncer/blob/main/src/bouncer.ts). Learn more about [Authorization](../security/authorization.md).
+Référence à une instance de la [classe Bouncer](https://github.com/adonisjs/bouncer/blob/main/src/bouncer.ts). En savoir plus sur l'[autorisation](../security/authorization.md).
 
 </dd>
 
@@ -320,16 +317,16 @@ ctx.i18n
 
 <dd>
 
-Reference to an instance of the [I18n class](https://github.com/adonisjs/i18n/blob/main/src/i18n.ts). Learn more about `i18n` in [Internationalization](../digging_deeper/i18n.md) guide.
+Référence à une instance de la [classe I18n](https://github.com/adonisjs/i18n/blob/main/src/i18n.ts). En savoir plus sur `i18n` dans le guide d'[internationalisation](../digging_deeper/i18n.md).
 
 </dd>
 
 </dl>
 
 
-## Extending HTTP context
+## Étendre le contexte HTTP
 
-You may add custom properties to the HTTP context class using macros or getters. Make sure to read the [extending AdonisJS guide](./extending_the_framework.md) first if you are new to the concept of macros.
+Vous pouvez ajouter des propriétés personnalisées à la classe du contexte HTTP en utilisant des macros ou des accesseurs. Assurez-vous de lire d'abord le [guide d'extension d'AdonisJS](./extending_the_framework.md) si vous n'êtes pas familier avec le concept de macros.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -343,7 +340,7 @@ HttpContext.getter('aProperty', function (this: HttpContext) {
 })
 ```
 
-Since the macros and getters are added at runtime, you must inform TypeScript about their types using module augmentation.
+Comme les macros et les accesseurs sont ajoutés au moment de l'exécution, vous devez informer TypeScript de leurs types en utilisant l'augmentation de module.
 
 ```ts
 import { HttpContext } from '@adonisjs/core/http'
@@ -366,11 +363,11 @@ HttpContext.getter('aProperty', function (this: HttpContext) {
 })
 ```
 
-## Creating dummy context during tests
+## Créer un contexte fictif pendant les tests
 
-You may use the `testUtils` service to create a dummy HTTP context during tests. 
+Vous pouvez utiliser le service `testUtils` pour créer un contexte HTTP fictif pendant les tests.
 
-The context instance is not attached to any route; therefore, the `ctx.route` and `ctx.params` values will be undefined. However, you can manually assign these properties if required by the code under test.
+L'instance de contexte n'est attachée à aucune route ; par conséquent, les valeurs `ctx.route` et `ctx.params` seront undefined. Cependant, vous pouvez attribuer manuellement ces propriétés si nécessaire pour le code en cours de test.
 
 ```ts
 import testUtils from '@adonisjs/core/services/test_utils'
@@ -378,7 +375,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 const ctx = testUtils.createHttpContext()
 ```
 
-By default, the `createHttpContext` method uses fake values for the `req` and the `res` objects. However, you can define custom values for these properties as shown in the following example.
+Par défaut, la méthode `createHttpContext` utilise des valeurs fictives pour les objets `req` et `res`. Cependant, vous pouvez définir des valeurs personnalisées pour ces propriétés comme indiqué dans l'exemple suivant.
 
 ```ts
 import { createServer } from 'node:http'
@@ -394,8 +391,9 @@ createServer((req, res) => {
 })
 ```
 
-### Using the HttpContext factory
-The `testUtils` service is only available inside an AdonisJS application; therefore, if you are building a package and need access to a fake HTTP context, you may use the [HttpContextFactory](https://github.com/adonisjs/http-server/blob/main/factories/http_context.ts#L30) class.
+### Utiliser la factory HttpContext
+
+Le service `testUtils` n'est disponible que dans une application AdonisJS ; par conséquent, si vous construisez un package et avez besoin d'accéder à un contexte HTTP fictif, vous pouvez utiliser la classe [HttpContextFactory](https://github.com/adonisjs/http-server/blob/main/factories/http_context.ts#L30).
 
 ```ts
 import { HttpContextFactory } from '@adonisjs/core/factories/http'

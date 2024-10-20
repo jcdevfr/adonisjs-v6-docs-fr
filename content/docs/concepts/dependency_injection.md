@@ -545,6 +545,7 @@ export default class DatabaseProvider {
 }
 ```
 
+<a id="evenements-du-conteneur"></a>
 ## Événements du conteneur
 
 Le conteneur émet l'événement `container_binding:resolved` après avoir résolu une liaison ou construit une instance de classe. La propriété `event.binding` sera une chaîne de caractères (nom de la liaison) ou un constructeur de classe, et la propriété `event.value` est la valeur résolue.
