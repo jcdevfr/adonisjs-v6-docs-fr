@@ -73,7 +73,7 @@ Cette section explique le fonctionnement de `hot-hook`. N'hésitez pas à la sau
 Ou, consultez le [fichier README](https://github.com/Julien-R44/hot-hook) du package si vous voulez une explication encore plus détaillée.
 :::
 
-Comprenons quand AdonisJS effectuera un rechargement complet (redémarrage du processus) et quand il rechargera à chaud le module.
+Voyons quand AdonisJS effectuera un rechargement complet (redémarrage du processus) et quand il rechargera à chaud le module.
 
 ### Création d'un arbre de dépendances
 

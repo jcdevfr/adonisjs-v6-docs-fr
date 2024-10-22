@@ -21,7 +21,7 @@ La couche HTTP dans une application AdonisJS se compose des modules suivants. Il
 
 <dd>
 
-Le [module router](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) est responsable de la définition des points d'entrée de votre application, connus sous le nom de routes. Une route doit définir un gestionnaire responsable du traitement de la requête. Le gestionnaire peut être une closure ou une référence à un contrôleur.
+Le [module router](https://github.com/adonisjs/http-server/blob/main/src/router/main.ts) est responsable de la définition des points d'entrée de votre application, connus sous le nom de routes. Une route doit définir un gestionnaire responsable du traitement de la requête. Le gestionnaire peut être une fonction anonyme ou une référence à un contrôleur.
 
 </dd>
 

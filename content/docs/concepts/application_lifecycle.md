@@ -126,11 +126,11 @@ Les hooks du cycle de vie vous permettent d'intervenir dans le processus de dém
 
 Vous pouvez écouter les hooks en utilisant les classes de fournisseurs de services ou les définir directement sur la classe Application.
 
-### Callbacks inline
+### Fonctions de rappel
 
 Vous devez enregistrer les hooks du cycle de vie dès qu'une instance d'application est créée.
 
-Les fichiers de point d'entrée `bin/server.ts`, `bin/console.ts` et `bin/test.ts` créent une nouvelle instance d'application pour différents environnements, et vous pouvez enregistrer des callbacks inline dans ces fichiers.
+Les fichiers de point d'entrée `bin/server.ts`, `bin/console.ts` et `bin/test.ts` créent une nouvelle instance d'application pour différents environnements, et vous pouvez enregistrer des fonctions de rappel dans ces fichiers.
 
 ```ts
 const app = new Application(new URL('../', import.meta.url))

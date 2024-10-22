@@ -4,7 +4,7 @@ summary: Découvrez AsyncLocalStorage et comment l'utiliser dans AdonisJS.
 
 # Stockage local asynchrone
 
-Selon la [documentation officielle de Node.js](https://nodejs.org/docs/latest-v21.x/api/async_context.html#class-asynclocalstorage) : “AsyncLocalStorage est utilisé pour créer un état asynchrone au sein des callbacks et des chaînes de promesses. **Il permet de stocker des données tout au long de la durée de vie d'une requête web ou de toute autre durée asynchrone. C'est similaire au stockage local de thread dans d'autres langages**.“
+Selon la [documentation officielle de Node.js](https://nodejs.org/docs/latest-v21.x/api/async_context.html#class-asynclocalstorage) : “AsyncLocalStorage est utilisé pour créer un état asynchrone au sein des fonctions de rappel et des chaînes de promesses. **Il permet de stocker des données tout au long de la durée de vie d'une requête web ou de toute autre durée asynchrone. C'est similaire au stockage local de thread dans d'autres langages**.“
 
 Pour simplifier davantage l'explication, AsyncLocalStorage vous permet de stocker un état lors de l'exécution d'une fonction asynchrone et de le rendre disponible pour tous les flux d'exécution au sein de cette fonction.
 
@@ -43,7 +43,7 @@ export const storage = new AsyncLocalStorage()
 
 Créez un fichier d'entrée nommé `main.js`. Dans ce fichier, importez l'instance d'`AsyncLocalStorage` créée dans le fichier `./storage.js`.
 
-La méthode `storage.run` accepte l'état que nous voulons partager comme premier argument et une fonction de callback comme second argument. Tous les flux d'exécution à l'intérieur de ce callback (y compris les modules importés) auront accès au même état.
+La méthode `storage.run` accepte l'état que nous voulons partager comme premier argument et une fonction de rappel comme second argument. Tous les flux d'exécution à l'intérieur de cette fonction de rappel (y compris les modules importés) auront accès au même état.
 
 ```ts
 // title: main.js
