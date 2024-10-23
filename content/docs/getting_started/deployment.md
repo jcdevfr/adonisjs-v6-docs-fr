@@ -10,7 +10,7 @@ Ce guide couvrira les directives générales pour déployer et exécuter une app
 
 ## Création de la version de production
 
-Comme première étape, vous devez créer la version de production de votre application AdonisJS en exécutant la commande de `construction`.
+Comme première étape, vous devez créer la version de production de votre application AdonisJS en exécutant la commande `build`.
 
 Voir aussi : [Processus de construction TypeScript](../concepts/typescript_build_process.md)
 
@@ -204,7 +204,7 @@ Selon le service CDN que vous utilisez et votre technique de déploiement, vous 
 
 1. Mettez à jour la configuration `vite.config.js` et `config/vite.ts` pour [utiliser l'URL du CDN](../basics/vite.md#deploying-assets-to-a-cdn).
 
-2. Exécutez la commande de `construction` pour compiler l'application et les ressources.
+2. Exécutez la commande `build` pour compiler l'application et les ressources.
 
 3. Copiez le contenu de `public/assets` vers votre serveur CDN. Par exemple, [voici une commande](https://github.com/adonisjs-community/polls-app/blob/main/commands/PublishAssets.ts) que nous utilisons pour publier les ressources vers un bucket Amazon S3.
 
