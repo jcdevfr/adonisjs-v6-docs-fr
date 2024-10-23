@@ -392,7 +392,7 @@ app.middlewarePath()
 
 ### policiesPath
 
-Renvoie le chemin vers un fichier dans le répertoire des policies.
+Renvoie le chemin vers un fichier dans le répertoire des politiques d'accès.
 
 ```ts
 app.policiesPath('posts.ts')
